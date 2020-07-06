@@ -1,6 +1,6 @@
 using System;
 
-namespace SlimmestBuild
+namespace TrackMyGames
 {
     public class WeatherForecast
     {
