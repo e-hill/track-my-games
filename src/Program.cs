@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TrackMyGames.DbContexts;
 using TrackMyGames.Setup;
 
 namespace TrackMyGames
@@ -35,6 +34,7 @@ namespace TrackMyGames
                 {
                     config.Sources.Clear();
                     config.AddEnvironmentVariables("TrackMyGames_");
+                    config.AddJsonFile("appsettings.json");
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
