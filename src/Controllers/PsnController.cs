@@ -56,7 +56,9 @@ namespace TrackMyGames.Controllers
             var authHeader = "Bearer " + accessToken;
 
             // get trophy titles
-            return Ok(await _psnCommunityApi.GetTrophyTitles(authHeader, getTrophiesRequest));
+            var trophyResponse = await _psnCommunityApi.GetTrophyTitles(authHeader, getTrophiesRequest);
+
+            return NoContent();
         }
     }
 }
