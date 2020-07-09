@@ -11,10 +11,6 @@ namespace TrackMyGames.Entities
 
         public string System { get; set; }
 
-        public string IconUrl { get; set; }
-
-        public string SmallIconUrl { get; set; }
-
         public IEnumerable<GameDeveloperEntity> GameDevelopers { get; set; }
 
         public IEnumerable<GamePublisherEntity> GamePublishers { get; set; }
@@ -23,6 +19,6 @@ namespace TrackMyGames.Entities
 
         public IEnumerable<GoalEntity> Goals { get; set; }
 
-        public IEnumerable<PsnTrophyEntity> PsnTrophies { get; set; }
+        public PsnTrophyCollectionEntity PsnTrophyCollection { get; set; }
     }
 }

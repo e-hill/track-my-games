@@ -4,9 +4,13 @@ namespace TrackMyGames.Entities
 {
     public class PsnTrophyEntity : BaseEntity
     {
-        public int GameId { get; set; }
+        public int? GroupId { get; set; }
 
-        [ForeignKey("GameId")]
-        public GameEntity Game { get; set; }
+        public PsnTrophyGroupEntity Group { get; set; }
+
+        public int CollectionId { get; set; }
+
+        [ForeignKey("CollectionId")]
+        public PsnTrophyCollectionEntity Collection { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -20,6 +21,7 @@ namespace TrackMyGames
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
 
             // In production, the Angular files will be served from this directory
@@ -28,12 +30,13 @@ namespace TrackMyGames
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            SetupConfigurations.AddSettings(services, Configuration);
             SetupDbContexts.AddApplicationDbContext(services, Configuration);
-
             SetupRefitClients.AddHandlers(services);
             SetupRefitClients.AddPsnRefitClient(services, Configuration);
             SetupRefitClients.AddPsnCommunityRefitClient(services, Configuration);
-            SetupConfigurations.AddSettings(services, Configuration);
+            SetupRepositories.AddRepositories(services);
+            SetupServices.AddServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -19,6 +19,10 @@ namespace TrackMyGames.DbContexts
 
         public DbSet<PsnTrophyEntity> PsnTrophies { get; set; }
 
+        public DbSet<PsnTrophyCollectionEntity> PsnTrophyCollections { get; set; }
+
+        public DbSet<PsnTrophyGroupEntity> PsnTrophyGroups { get; set; }
+
         public DbSet<PublisherEntity> Publishers { get; set; }
 
         public DbSet<SeriesEntity> Series { get; set; }
@@ -27,6 +31,15 @@ namespace TrackMyGames.DbContexts
             : base(options)
         {
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PsnTrophyCollectionEntity>()
+                .HasIndex(i => i.PsnId)
+                .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
