@@ -9,6 +9,6 @@ namespace TrackMyGames.Entities
         public int GameId { get; set; }
 
         [ForeignKey("GameId")]
-        public GameEntity Game { get; set; }
+        public virtual GameEntity Game { get; set; }
     }
 }

@@ -30,8 +30,14 @@ namespace TrackMyGames.Repositories
 
         public async Task<IEnumerable<Game>> GetGamesByNameAsync(string name)
         {
-            var gameEntity = await _dbContext.Games.Where(x => x.Name == name).ToListAsync();
-            return _mapper.Map<IEnumerable<Game>>(gameEntity);
+            var games = await _dbContext.Games.Where(x => x.Name == name).ToListAsync();
+            return _mapper.Map<IEnumerable<Game>>(games);
+        }
+
+        public async Task<IEnumerable<Game>> GetGamesAsync()
+        {
+            var games = await _dbContext.Games.ToListAsync();
+            return _mapper.Map<IEnumerable<Game>>(games);
         }
     }
 }

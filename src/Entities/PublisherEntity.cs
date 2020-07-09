@@ -6,6 +6,6 @@ namespace TrackMyGames.Entities
     {
         public string Name { get; set; }
 
-        public IEnumerable<GamePublisherEntity> GamePublishers { get; set; }
+        public virtual IEnumerable<GamePublisherEntity> GamePublishers { get; set; }
     }
 }

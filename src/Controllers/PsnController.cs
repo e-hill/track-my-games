@@ -1,15 +1,9 @@
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using TrackMyGames.Models;
-using TrackMyGames.Refit;
-using TrackMyGames.Repositories;
 using TrackMyGames.Services.Api;
 using TrackMyGames.Services.Pipeline;
-using TrackMyGames.Settings;
 
 namespace TrackMyGames.Controllers
 {

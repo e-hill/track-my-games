@@ -7,11 +7,11 @@ namespace TrackMyGames.Entities
         public int GameId { get; set; }
 
         [ForeignKey("GameId")]
-        public GameEntity Game { get; set; }
+        public virtual GameEntity Game { get; set; }
 
         public int PublisherId { get; set; }
 
         [ForeignKey("PublisherId")]
-        public PublisherEntity Publisher { get; set; }
+        public virtual PublisherEntity Publisher { get; set; }
     }
 }

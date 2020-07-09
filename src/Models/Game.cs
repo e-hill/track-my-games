@@ -9,5 +9,7 @@ namespace TrackMyGames.Models
         public string ReleaseDate { get; set; }
 
         public string System { get; set; }
+
+        public virtual PsnTrophyCollection PsnTrophyCollection { get; set; }
     }
 }

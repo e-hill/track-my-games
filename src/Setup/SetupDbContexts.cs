@@ -11,6 +11,7 @@ namespace TrackMyGames.Setup
         public static void AddApplicationDbContext(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContextPool<ApplicationDbContext>(options => options
+                .UseLazyLoadingProxies()
                 .UseMySql(configuration.GetConnectionString("ApplicationDatabase")));
         }
 

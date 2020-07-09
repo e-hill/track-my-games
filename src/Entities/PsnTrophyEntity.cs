@@ -6,11 +6,11 @@ namespace TrackMyGames.Entities
     {
         public int? GroupId { get; set; }
 
-        public PsnTrophyGroupEntity Group { get; set; }
+        public virtual PsnTrophyGroupEntity Group { get; set; }
 
         public int CollectionId { get; set; }
 
         [ForeignKey("CollectionId")]
-        public PsnTrophyCollectionEntity Collection { get; set; }
+        public virtual PsnTrophyCollectionEntity Collection { get; set; }
     }
 }

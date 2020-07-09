@@ -8,5 +8,6 @@ namespace TrackMyGames.Repositories
     {
         Task<Game> AddGameAsync(Game game);
         Task<IEnumerable<Game>> GetGamesByNameAsync(string name);
+        Task<IEnumerable<Game>> GetGamesAsync();
     }
 }

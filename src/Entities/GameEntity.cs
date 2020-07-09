@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace TrackMyGames.Entities
 {
@@ -11,14 +10,14 @@ namespace TrackMyGames.Entities
 
         public string System { get; set; }
 
-        public IEnumerable<GameDeveloperEntity> GameDevelopers { get; set; }
+        public virtual IEnumerable<GameDeveloperEntity> GameDevelopers { get; set; }
 
-        public IEnumerable<GamePublisherEntity> GamePublishers { get; set; }
+        public virtual IEnumerable<GamePublisherEntity> GamePublishers { get; set; }
 
-        public IEnumerable<GameSeriesEntity> GameSeries { get; set; }
+        public virtual IEnumerable<GameSeriesEntity> GameSeries { get; set; }
 
-        public IEnumerable<GoalEntity> Goals { get; set; }
+        public virtual IEnumerable<GoalEntity> Goals { get; set; }
 
-        public PsnTrophyCollectionEntity PsnTrophyCollection { get; set; }
+        public virtual PsnTrophyCollectionEntity PsnTrophyCollection { get; set; }
     }
 }
