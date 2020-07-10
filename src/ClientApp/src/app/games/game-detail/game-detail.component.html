@@ -1,8 +1,12 @@
-<div class="d-flex flex-wrap">
-  <div class="card m-4" style="width: 18rem;" *ngFor="let trophy of trophies$ | async">
-    <img class="card-img-top" src="{{ trophy.iconUrl }}" alt="Card image cap">
-    <div class="card-body">
-      <p class="card-text">{{ trophy.name }}</p>
+<div class="list-group">
+  <div class="list-group-item list-group-item-action flex-column align-items-start"
+    *ngFor="let trophy of trophies$ | async">
+    <div class="d-flex align-items-center">
+      <img src="{{ trophy.smallIconUrl }}" alt="Card image cap">
+      <div class="ml-4">
+        <p class="mb-0">{{trophy.name}}</p>
+        <p class="mb-0">{{trophy.detail}}</p>
+      </div>
     </div>
   </div>
 </div>
