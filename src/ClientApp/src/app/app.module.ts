@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { GamesComponent } from './games/games.component';
 import { GameCardComponent } from './games/game-card/game-card.component';
+import { GameDetailComponent } from './games/game-detail/game-detail.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { GameCardComponent } from './games/game-card/game-card.component';
     HomeComponent,
     GamesComponent,
     GameCardComponent,
+    GameDetailComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

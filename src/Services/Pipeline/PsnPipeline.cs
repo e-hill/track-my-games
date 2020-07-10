@@ -10,21 +10,23 @@ namespace TrackMyGames.Services.Pipeline
     {
         private readonly IGamesRepository _gamesRepository;
         private readonly IPsnTrophyCollectionRepository _collectionRepository;
+        private readonly IPsnTrophyRepository _trophyRepository;
 
-        public PsnPipeline(IGamesRepository gamesRepository, IPsnTrophyCollectionRepository collectionRepository)
+        public PsnPipeline(IGamesRepository gamesRepository, IPsnTrophyCollectionRepository collectionRepository, IPsnTrophyRepository trophyRepository)
         {
+            _trophyRepository = trophyRepository;
             _gamesRepository = gamesRepository;
             _collectionRepository = collectionRepository;
         }
 
-        public async Task ProcessUpdate(GetTrophyTitlesResponse trophyResponse)
+        public async Task ProcessTitlesUpdate(GetTrophyTitlesResponse trophyTitlesResponse)
         {
-            if (trophyResponse.TrophyTitles == null)
+            if (trophyTitlesResponse.TrophyTitles == null)
             {
                 return;
             }
 
-            foreach (var title in trophyResponse.TrophyTitles)
+            foreach (var title in trophyTitlesResponse.TrophyTitles)
             {
                 var collection = await EnsureCollectionExists(title);
                 var game = await EnsureGameExists(title);
@@ -32,6 +34,26 @@ namespace TrackMyGames.Services.Pipeline
                 if (collection.GameId == null)
                 {
                     await _collectionRepository.LinkGameAsync(collection.Id, game.Id);
+                }
+            }
+        }
+
+        public async Task ProcessTrophiesUpdate(GetTrophiesResponse trophiesResponse, string psnId)
+        {
+            if (trophiesResponse.Trophies == null)
+            {
+                return;
+            }
+
+            var collection = await _collectionRepository.GetByPsnIdAsync(psnId);
+
+            foreach (var trophyResponse in trophiesResponse.Trophies)
+            {
+                var trophy = await EnsureTrophyExists(trophyResponse, collection.Id);
+
+                if (trophy.CollectionId == null)
+                {
+                    await _trophyRepository.LinkCollectionAsync(trophy.Id, collection.Id);
                 }
             }
         }
@@ -80,6 +102,31 @@ namespace TrackMyGames.Services.Pipeline
             }
 
             return game;
+        }
+
+        private async Task<PsnTrophy> EnsureTrophyExists(GetTrophiesResponse.TrophiesResponse trophyResponse, int collectionId)
+        {
+            var trophy = await _trophyRepository.GetTrophyAsync(trophyResponse.TrophyId, collectionId);
+
+            if (trophy == null)
+            {
+                var newTrophy = new PsnTrophy
+                {
+                    Name = trophyResponse.TrophyName,
+                    Detail = trophyResponse.TrophyDetail,
+                    Type = trophyResponse.TrophyType,
+                    IconUrl = trophyResponse.TrophyIconUrl,
+                    SmallIconUrl = trophyResponse.TrophySmallIconUrl,
+                    Hidden = trophyResponse.TrophyHidden,
+                    Rare = trophyResponse.TrophyRare,
+                    EarnedRate = trophyResponse.TrophyEarnedRate,
+                    PsnId = trophyResponse.TrophyId,
+                };
+
+                trophy = await _trophyRepository.AddAsync(newTrophy);
+            }
+
+            return trophy;
         }
     }
 }

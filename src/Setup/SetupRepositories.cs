@@ -11,6 +11,7 @@ namespace TrackMyGames.Setup
         {
             services.AddTransient<IGamesRepository, GamesRepository>();
             services.AddTransient<IPsnTrophyCollectionRepository, PsnTrophyCollectionRepository>();
+            services.AddTransient<IPsnTrophyRepository, PsnTrophyRepository>();
         }
     }
 }

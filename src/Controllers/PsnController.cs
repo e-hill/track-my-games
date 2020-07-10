@@ -1,4 +1,6 @@
+using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -34,15 +36,29 @@ namespace TrackMyGames.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
 
-            var trophyResponse = await _psnCommunityApiService.GetTrophyTitlesAsync(accessToken);
+            var trophyTitlesResponse = await _psnCommunityApiService.GetTrophyTitlesAsync(accessToken);
 
-            if (trophyResponse == null)
+            if (trophyTitlesResponse == null)
             {
                 _logger.LogError("Failed to get trophy titles from psn community api endpoint.");
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
 
-            await _pipeline.ProcessUpdate(trophyResponse);
+            await _pipeline.ProcessTitlesUpdate(trophyTitlesResponse);
+
+            foreach (var trophyTitle in trophyTitlesResponse.TrophyTitles)
+            {
+                var psnId = trophyTitle.NpCommunicationId;
+                var trophyResponse = await _psnCommunityApiService.GetTrophiesAsync(psnId, accessToken);
+
+                if (trophyResponse == null)
+                {
+                    _logger.LogError($"Failed to get trophies for {psnId} from psn community api endpoint.");
+                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+
+                await _pipeline.ProcessTrophiesUpdate(trophyResponse, psnId);
+            }
 
             return NoContent();
         }

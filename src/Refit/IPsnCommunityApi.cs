@@ -9,6 +9,9 @@ namespace TrackMyGames.Refit
     {
         [Get("/trophy/v1/trophyTitles")]
         Task<GetTrophyTitlesResponse> GetTrophyTitles([Header("Authorization")] string accessToken, GetTrophyTitlesRequest request);
+
+        [Get("/trophy/v1/trophyTitles/{psnId}/trophyGroups/default/trophies")]
+        Task<GetTrophiesResponse> GetTrophies([Header("Authorization")] string accessToken, string psnId, GetTrophiesRequest request);
     }
 
     public class GetTrophyTitlesRequest
@@ -82,6 +85,55 @@ namespace TrackMyGames.Refit
 
                 public DateTime LastUpdateDate { get; set; }
             }
+        }
+    }
+
+    public class GetTrophiesRequest
+    {
+        [AliasAs("fields")]
+        public string Fields { get; set; }
+
+        [AliasAs("visibleType")]
+        public int VisibleType { get; set; }
+
+        [AliasAs("npLanguage")]
+        public string NpLanguage { get; set; } = "en";
+    }
+
+    public class GetTrophiesResponse
+    {
+        public IEnumerable<TrophiesResponse> Trophies { get; set; }
+
+        public class TrophiesResponse
+        {
+            public FromUserResponse FromUser { get; set; }
+
+            public class FromUserResponse
+            {
+                public bool Earned { get; set; }
+
+                public DateTime? EarnedDate { get; set; }
+
+                public string OnlineId { get; set; }
+            }
+
+            public string TrophyDetail { get; set; }
+
+            public float TrophyEarnedRate { get; set; }
+
+            public bool TrophyHidden { get; set; }
+
+            public string TrophyIconUrl { get; set; }
+
+            public int TrophyId { get; set; }
+
+            public string TrophyName { get; set; }
+
+            public int TrophyRare { get; set; }
+
+            public string TrophySmallIconUrl { get; set; }
+
+            public string TrophyType { get; set; }
         }
     }
 }

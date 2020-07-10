@@ -18,7 +18,7 @@ namespace TrackMyGames.Services.Api
 
         public async Task<GetTrophyTitlesResponse> GetTrophyTitlesAsync(string accessToken)
         {
-            var getTrophiesRequest = new GetTrophyTitlesRequest
+            var request = new GetTrophyTitlesRequest
             {
                 Fields = "@default,trophyTitleSmallIconUrl",
                 Platform = "PS3,PS4,PSVITA",
@@ -26,7 +26,20 @@ namespace TrackMyGames.Services.Api
 
             var authHeader = "Bearer " + accessToken;
 
-            return await _psnCommunityApi.GetTrophyTitles(authHeader, getTrophiesRequest);
+            return await _psnCommunityApi.GetTrophyTitles(authHeader, request);
+        }
+
+        public async Task<GetTrophiesResponse> GetTrophiesAsync(string psnId, string accessToken)
+        {
+            var request = new GetTrophiesRequest
+            {
+                Fields = "@default,trophyRare,trophyEarnedRate,trophySmallIconUrl",
+                VisibleType = 1
+            };
+
+            var authHeader = "Bearer " + accessToken;
+
+            return await _psnCommunityApi.GetTrophies(authHeader, psnId, request);
         }
     }
 }

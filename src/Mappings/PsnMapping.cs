@@ -7,5 +7,6 @@ public class PsnMapping : Profile
     public PsnMapping()
     {
         CreateMap<PsnTrophyCollection, PsnTrophyCollectionEntity>().ReverseMap();
+        CreateMap<PsnTrophy, PsnTrophyEntity>().ReverseMap();
     }
 }
