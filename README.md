@@ -166,5 +166,5 @@ Project Link: [https://github.com/e-hill/track-my-games](https://github.com/e-hi
 [license-shield]: https://img.shields.io/github/license/e-hill/track-my-games.svg?style=flat-square
 [license-url]: https://github.com/e-hill/track-my-games/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[linkedin-url]: https://linkedin.com/in/eric-hill-05887026
 [product-screenshot]: images/screenshot.png
