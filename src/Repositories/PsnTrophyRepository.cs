@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +41,13 @@ namespace TrackMyGames.Repositories
         {
             var trophy = await _dbContext.PsnTrophies.SingleOrDefaultAsync(x => x.PsnId == psnId && x.CollectionId == collectionId);
             return _mapper.Map<PsnTrophy>(trophy);
+        }
+
+        public async Task<IEnumerable<PsnTrophy>> GetTrophyByGameAsync(int gameId)
+        {
+            var game = await _dbContext.Games.SingleAsync(x => x.Id == gameId);
+            var trophies = await _dbContext.PsnTrophies.Where(x => x.CollectionId == game.PsnTrophyCollection.Id).ToListAsync();
+            return _mapper.Map<IEnumerable<PsnTrophy>>(trophies);
         }
     }
 }

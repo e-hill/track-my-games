@@ -1,1 +1,8 @@
-<p>game-detail works!</p>
+<div class="d-flex flex-wrap">
+  <div class="card m-4" style="width: 18rem;" *ngFor="let trophy of trophies$ | async">
+    <img class="card-img-top" src="{{ trophy.iconUrl }}" alt="Card image cap">
+    <div class="card-body">
+      <p class="card-text">{{ trophy.name }}</p>
+    </div>
+  </div>
+</div>

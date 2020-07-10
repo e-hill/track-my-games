@@ -7,7 +7,11 @@ namespace TrackMyGames.Repositories
     public interface IGamesRepository
     {
         Task<Game> AddGameAsync(Game game);
+
         Task<IEnumerable<Game>> GetGamesByNameAsync(string name);
+
         Task<IEnumerable<Game>> GetGamesAsync();
+
+        Task<Game> GetGameAsync(int gameId);
     }
 }

@@ -39,5 +39,11 @@ namespace TrackMyGames.Repositories
             var games = await _dbContext.Games.ToListAsync();
             return _mapper.Map<IEnumerable<Game>>(games);
         }
+
+        public async Task<Game> GetGameAsync(int gameId)
+        {
+            var game = await _dbContext.Games.SingleOrDefaultAsync(x => x.Id == gameId);
+            return _mapper.Map<Game>(game);
+        }
     }
 }

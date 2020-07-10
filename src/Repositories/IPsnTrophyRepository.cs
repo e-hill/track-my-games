@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrackMyGames.Models;
 
@@ -10,5 +11,7 @@ namespace TrackMyGames.Repositories
         Task LinkCollectionAsync(int trophyId, int collectionId);
 
         Task<PsnTrophy> GetTrophyAsync(int psnId, int collectionId);
+
+        Task<IEnumerable<PsnTrophy>> GetTrophyByGameAsync(int gameId);
     }
 }

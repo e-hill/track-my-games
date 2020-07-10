@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { GamesService, PsnTrophy } from '../games.service';
+import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game-detail',
@@ -7,9 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameDetailComponent implements OnInit {
 
-  constructor() { }
+  trophies$: Observable<PsnTrophy[]>;
+
+  constructor(private gamesService: GamesService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    const gameId = this.route.snapshot.paramMap.get('id');
+    this.trophies$ = this.gamesService.getPsnTrophies(gameId);
   }
-
 }

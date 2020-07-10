@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { GamesComponent } from './games/games.component';
 import { GameCardComponent } from './games/game-card/game-card.component';
 import { GameDetailComponent } from './games/game-detail/game-detail.component';
+import { GameDetailCardComponent } from './games/game-detail/game-detail-card/game-detail-card.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { GameDetailComponent } from './games/game-detail/game-detail.component';
     GamesComponent,
     GameCardComponent,
     GameDetailComponent,
+    GameDetailCardComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
