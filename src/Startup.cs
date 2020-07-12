@@ -32,6 +32,7 @@ namespace TrackMyGames
 
             SetupConfigurations.AddSettings(services, Configuration);
             SetupDbContexts.AddApplicationDbContext(services, Configuration);
+            SetupPipelines.AddPipelines(services);
             SetupRefitClients.AddHandlers(services);
             SetupRefitClients.AddPsnRefitClient(services, Configuration);
             SetupRefitClients.AddPsnCommunityRefitClient(services, Configuration);

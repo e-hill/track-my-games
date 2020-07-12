@@ -10,8 +10,11 @@ namespace TrackMyGames.Setup
         public static void AddRepositories(IServiceCollection services)
         {
             services.AddTransient<IGamesRepository, GamesRepository>();
+            services.AddTransient<IGoalsRepository, GoalsRepository>();
             services.AddTransient<IPsnTrophyCollectionRepository, PsnTrophyCollectionRepository>();
             services.AddTransient<IPsnTrophyRepository, PsnTrophyRepository>();
+            services.AddTransient<IPsnUserRepository, PsnUserRepository>();
+            services.AddTransient<IPsnUserProgressRepository, PsnUserProgressRepository>();
         }
     }
 }

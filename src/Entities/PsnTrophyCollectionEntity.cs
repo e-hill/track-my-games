@@ -11,6 +11,8 @@ namespace TrackMyGames.Entities
 
         public string Detail { get; set; }
 
+        public string Platform { get; set; }
+
         public string IconUrl { get; set; }
 
         public string SmallIconUrl { get; set; }

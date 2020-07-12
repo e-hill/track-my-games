@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using TrackMyGames.Refit;
 using TrackMyGames.Settings;
 
-namespace TrackMyGames.Services.Api
+namespace TrackMyGames.Services
 {
     public class PsnCommunityApiService : IPsnCommunityApiService
     {

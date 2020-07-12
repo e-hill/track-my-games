@@ -1,10 +1,25 @@
-<div class="d-flex flex-wrap">
-  <a [routerLink]="[game.id]" class="custom-card" *ngFor="let game of games$ | async">
-    <div class="card m-4" style="width: 18rem;">
-      <img class="card-img-top" src="{{ game.psnTrophyCollection.iconUrl }}" alt="Card image cap">
-      <div class="card-body">
-        <p class="card-text">{{ game.name }}</p>
-      </div>
-    </div>
-  </a>
-</div>
+<table class="table table-striped">
+  <caption>All Games</caption>
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Release Date</th>
+      <th scope="col">System</th>
+      <th scope="col">Developer</th>
+      <th scope="col">Publisher</th>
+      <th scope="col" style="text-align: center;">Completionist</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let game of games$ | async">
+      <td>{{game.name}}</td>
+      <td>{{game.releaseDate}}</td>
+      <td>{{game.system}}</td>
+      <td>{{game.developer}}</td>
+      <td>{{game.publisher}}</td>
+      <td style="text-align: center;">
+        <p class="mb-0" *ngFor="let goal of game.goals">{{goal.name}}</p>
+      </td>
+    </tr>
+  </tbody>
+</table>

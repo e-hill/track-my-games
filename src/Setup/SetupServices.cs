@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using TrackMyGames.Services.Api;
-using TrackMyGames.Services.Pipeline;
+using TrackMyGames.Services;
 
 namespace TrackMyGames.Setup
 {
@@ -10,8 +9,6 @@ namespace TrackMyGames.Setup
         {
             services.AddTransient<IPsnApiService, PsnApiService>();
             services.AddTransient<IPsnCommunityApiService, PsnCommunityApiService>();
-
-            services.AddTransient<IPsnPipeline, PsnPipeline>();
         }
     }
 }

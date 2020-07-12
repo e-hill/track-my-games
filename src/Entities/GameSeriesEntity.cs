@@ -4,6 +4,8 @@ namespace TrackMyGames.Entities
 {
     public class GameSeriesEntity : BaseEntity
     {
+        public string Name { get; set; }
+
         public int GameId { get; set; }
 
         [ForeignKey("GameId")]

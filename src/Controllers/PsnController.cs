@@ -1,11 +1,10 @@
-using System.Linq;
 using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TrackMyGames.Services.Api;
-using TrackMyGames.Services.Pipeline;
+using TrackMyGames.Pipelines;
+using TrackMyGames.Services;
 
 namespace TrackMyGames.Controllers
 {
@@ -14,14 +13,14 @@ namespace TrackMyGames.Controllers
     {
         private readonly IPsnApiService _psnApiService;
         private readonly IPsnCommunityApiService _psnCommunityApiService;
-        private readonly IPsnPipeline _pipeline;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<PsnController> _logger;
 
-        public PsnController(IPsnApiService psnApiService, IPsnCommunityApiService psnCommunityApiService, IPsnPipeline pipeline, ILogger<PsnController> logger)
+        public PsnController(IPsnApiService psnApiService, IPsnCommunityApiService psnCommunityApiService, IServiceScopeFactory scopeFactory, ILogger<PsnController> logger)
         {
             _psnApiService = psnApiService;
             _psnCommunityApiService = psnCommunityApiService;
-            _pipeline = pipeline;
+            _scopeFactory = scopeFactory;
             _logger = logger;
         }
 
@@ -38,27 +37,35 @@ namespace TrackMyGames.Controllers
 
             var trophyTitlesResponse = await _psnCommunityApiService.GetTrophyTitlesAsync(accessToken);
 
-            if (trophyTitlesResponse == null)
+            if (trophyTitlesResponse == null || trophyTitlesResponse.TrophyTitles == null)
             {
                 _logger.LogError("Failed to get trophy titles from psn community api endpoint.");
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
 
-            await _pipeline.ProcessTitlesUpdate(trophyTitlesResponse);
-
-            foreach (var trophyTitle in trophyTitlesResponse.TrophyTitles)
+            Parallel.ForEach(trophyTitlesResponse.TrophyTitles, async (trophyTitle) =>
             {
+                using var scope = _scopeFactory.CreateScope();
+
+                var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
+                var collection = await pipeline.ProcessCollectionUpdate(trophyTitle);
+
                 var psnId = trophyTitle.NpCommunicationId;
                 var trophyResponse = await _psnCommunityApiService.GetTrophiesAsync(psnId, accessToken);
 
-                if (trophyResponse == null)
+                if (trophyResponse == null || trophyResponse.Trophies == null)
                 {
                     _logger.LogError($"Failed to get trophies for {psnId} from psn community api endpoint.");
-                    return StatusCode((int)HttpStatusCode.InternalServerError);
                 }
 
-                await _pipeline.ProcessTrophiesUpdate(trophyResponse, psnId);
-            }
+                Parallel.ForEach(trophyResponse.Trophies, async (trophyResponse) =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+
+                    var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
+                    await pipeline.ProcessTrophyUpdate(trophyResponse, psnId, collection.Id);
+                });
+            });
 
             return NoContent();
         }

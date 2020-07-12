@@ -7,7 +7,7 @@ namespace TrackMyGames.Entities
     {
         public bool Earned { get; set; }
 
-        public DateTime EarnedDate { get; set; }
+        public DateTime? EarnedDate { get; set; }
 
         public int TrophyId { get; set; }
 

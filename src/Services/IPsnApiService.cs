@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace TrackMyGames.Services.Api
+namespace TrackMyGames.Services
 {
     public interface IPsnApiService
     {

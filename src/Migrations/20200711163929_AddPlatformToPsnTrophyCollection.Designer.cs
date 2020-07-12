@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrackMyGames.DbContexts;
 
 namespace TrackMyGames.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200711163929_AddPlatformToPsnTrophyCollection")]
+    partial class AddPlatformToPsnTrophyCollection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,9 +104,6 @@ namespace TrackMyGames.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<int>("SeriesId")
                         .HasColumnType("int");
 
@@ -123,7 +122,7 @@ namespace TrackMyGames.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -262,7 +261,7 @@ namespace TrackMyGames.Migrations
                     b.Property<bool>("Earned")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("EarnedDate")
+                    b.Property<DateTime>("EarnedDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("TrophyId")
@@ -358,7 +357,9 @@ namespace TrackMyGames.Migrations
                 {
                     b.HasOne("TrackMyGames.Entities.GameEntity", "Game")
                         .WithMany("Goals")
-                        .HasForeignKey("GameId");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TrackMyGames.Entities.PsnTrophyCollectionEntity", b =>

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TrackMyGames.Models
 {
     public class Game
@@ -10,6 +12,8 @@ namespace TrackMyGames.Models
 
         public string System { get; set; }
 
-        public virtual PsnTrophyCollection PsnTrophyCollection { get; set; }
+        public IEnumerable<Goal> Goals { get; set; }
+
+        public PsnTrophyCollection PsnTrophyCollection { get; set; }
     }
 }

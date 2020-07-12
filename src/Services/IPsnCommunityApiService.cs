@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using TrackMyGames.Refit;
 
-namespace TrackMyGames.Services.Api
+namespace TrackMyGames.Services
 {
     public interface IPsnCommunityApiService
     {
