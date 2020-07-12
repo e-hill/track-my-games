@@ -10,8 +10,8 @@ namespace TrackMyGames.Models
 
         public DateTime? EarnedDate { get; set; }
 
-        public PsnTrophy Trophy { get; set; }
+        public string OnlineId { get; set; }
 
-        public PsnUser User { get; set; }
+        public PsnTrophy Trophy { get; set; }
     }
 }

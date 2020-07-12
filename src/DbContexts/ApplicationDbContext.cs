@@ -23,8 +23,6 @@ namespace TrackMyGames.DbContexts
 
         public DbSet<PsnTrophyGroupEntity> PsnTrophyGroups { get; set; }
 
-        public DbSet<PsnUserEntity> PsnUser { get; set; }
-
         public DbSet<PsnUserProgressEntity> PsnUserProgress { get; set; }
 
         public DbSet<PublisherEntity> Publishers { get; set; }
@@ -43,12 +41,8 @@ namespace TrackMyGames.DbContexts
                 .HasIndex(i => i.PsnId)
                 .IsUnique();
 
-            modelBuilder.Entity<PsnUserEntity>()
-                .HasIndex(i => i.OnlineId)
-                .IsUnique();
-
             modelBuilder.Entity<PsnUserProgressEntity>()
-                .HasIndex(i => new { i.TrophyId, i.UserId })
+                .HasIndex(i => new { i.TrophyId, i.OnlineId })
                 .IsUnique();
 
             base.OnModelCreating(modelBuilder);

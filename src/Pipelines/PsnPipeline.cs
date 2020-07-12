@@ -13,16 +13,14 @@ namespace TrackMyGames.Pipelines
         private readonly IGoalsRepository _goalsRepository;
         private readonly IPsnTrophyCollectionRepository _collectionRepository;
         private readonly IPsnTrophyRepository _trophyRepository;
-        private readonly IPsnUserRepository _userRepository;
         private readonly IPsnUserProgressRepository _userProgressRepository;
 
-        public PsnPipeline(IGamesRepository gamesRepository, IGoalsRepository goalsRepository, IPsnTrophyCollectionRepository collectionRepository, IPsnTrophyRepository trophyRepository, IPsnUserRepository userRepository, IPsnUserProgressRepository userProgressRepository)
+        public PsnPipeline(IGamesRepository gamesRepository, IGoalsRepository goalsRepository, IPsnTrophyCollectionRepository collectionRepository, IPsnTrophyRepository trophyRepository, IPsnUserProgressRepository userProgressRepository)
         {
             _trophyRepository = trophyRepository;
             _gamesRepository = gamesRepository;
             _goalsRepository = goalsRepository;
             _collectionRepository = collectionRepository;
-            _userRepository = userRepository;
             _userProgressRepository = userProgressRepository;
         }
 
@@ -57,13 +55,7 @@ namespace TrackMyGames.Pipelines
 
             if (trophyResponse.FromUser != null)
             {
-                var user = await EnsurePsnUserExists(trophyResponse.FromUser.OnlineId);
-                var userProgress = await EnsurePsnUserProgressExists(trophy.Id, user.Id);
-
-                userProgress.Earned = trophyResponse.FromUser.Earned;
-                userProgress.EarnedDate = trophyResponse.FromUser.EarnedDate;
-
-                await _userProgressRepository.UpdateAsync(userProgress);
+                await EnsurePsnUserProgressExists(trophyResponse.FromUser, trophy.Id);
             }
         }
 
@@ -156,30 +148,28 @@ namespace TrackMyGames.Pipelines
             return goal;
         }
 
-        private async Task<PsnUser> EnsurePsnUserExists(string onlineId)
+        private async Task<PsnUserProgress> EnsurePsnUserProgressExists(GetTrophiesResponse.TrophiesResponse.FromUserResponse fromUser, int trophyId)
         {
-            var user = await _userRepository.GetUserAsync(onlineId);
-
-            if (user == null)
-            {
-                var newUser = new PsnUser
-                {
-                    OnlineId = onlineId
-                };
-
-                user = await _userRepository.AddAsync(newUser);
-            }
-
-            return user;
-        }
-
-        private async Task<PsnUserProgress> EnsurePsnUserProgressExists(int trophyId, int userId)
-        {
-            var userProgress = await _userProgressRepository.GetUserProgressAsync(trophyId, userId);
+            var userProgress = await _userProgressRepository.GetUserProgressAsync(trophyId, fromUser.OnlineId);
 
             if (userProgress == null)
             {
-                userProgress = await _userProgressRepository.AddAsync(trophyId, userId);
+                var newUserProgress = new PsnUserProgress
+                {
+                    Earned = fromUser.Earned,
+                    EarnedDate = fromUser.EarnedDate,
+                    OnlineId = fromUser.OnlineId,
+                };
+
+                userProgress = await _userProgressRepository.AddAsync(newUserProgress, trophyId);
+            }
+            else
+            {
+                userProgress.Earned = fromUser.Earned;
+                userProgress.EarnedDate = fromUser.EarnedDate;
+                userProgress.OnlineId = fromUser.OnlineId;
+
+                await _userProgressRepository.UpdateAsync(userProgress);
             }
 
             return userProgress;

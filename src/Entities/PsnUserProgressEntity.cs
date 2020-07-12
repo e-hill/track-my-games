@@ -9,14 +9,11 @@ namespace TrackMyGames.Entities
 
         public DateTime? EarnedDate { get; set; }
 
+        public string OnlineId { get; set; }
+
         public int TrophyId { get; set; }
 
         [ForeignKey("TrophyId")]
         public virtual PsnTrophyEntity Trophy { get; set; }
-
-        public int UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual PsnUserEntity User { get; set; }
     }
 }

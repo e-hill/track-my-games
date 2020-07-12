@@ -13,7 +13,6 @@ namespace TrackMyGames.Setup
             services.AddTransient<IGoalsRepository, GoalsRepository>();
             services.AddTransient<IPsnTrophyCollectionRepository, PsnTrophyCollectionRepository>();
             services.AddTransient<IPsnTrophyRepository, PsnTrophyRepository>();
-            services.AddTransient<IPsnUserRepository, PsnUserRepository>();
             services.AddTransient<IPsnUserProgressRepository, PsnUserProgressRepository>();
         }
     }
