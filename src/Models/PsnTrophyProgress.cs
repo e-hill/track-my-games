@@ -2,7 +2,7 @@ using System;
 
 namespace TrackMyGames.Models
 {
-    public class PsnUserProgress
+    public class PsnTrophyProgress
     {
         public int Id { get; set; }
 

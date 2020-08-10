@@ -35,7 +35,7 @@ namespace TrackMyGames.Repositories
         public async Task LinkGameAsync(int collectionId, int gameId)
         {
             var collection = await _dbContext.PsnTrophyCollections.SingleAsync(x => x.Id == collectionId);
-            collection.Game = await _dbContext.Games.SingleAsync(x => x.Id == gameId);
+            collection.Game = await _dbContext.PsnGames.SingleAsync(x => x.Id == gameId);
 
             _dbContext.PsnTrophyCollections.Update(collection);
             await _dbContext.SaveChangesAsync();

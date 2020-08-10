@@ -7,6 +7,7 @@
         <p class="mb-0">{{trophy.name}}</p>
         <p class="mb-0">{{trophy.detail}}</p>
       </div>
+      <p class="ml-auto mb-0" *ngIf="trophy.earned">{{trophy.earnedDate | date: 'short'}}</p>
     </div>
   </div>
 </div>

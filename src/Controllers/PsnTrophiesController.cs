@@ -4,7 +4,7 @@ using TrackMyGames.Repositories;
 
 namespace TrackMyGames.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/psn/trophies")]
     public class PsnTrophiesController : Controller
     {
         private readonly IPsnTrophyRepository _psnTrophyRepository;

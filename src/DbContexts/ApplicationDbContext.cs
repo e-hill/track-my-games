@@ -17,6 +17,8 @@ namespace TrackMyGames.DbContexts
 
         public DbSet<GoalEntity> Goals { get; set; }
 
+        public DbSet<PsnGameEntity> PsnGames { get; set; }
+
         public DbSet<PsnTrophyEntity> PsnTrophies { get; set; }
 
         public DbSet<PsnTrophyCollectionEntity> PsnTrophyCollections { get; set; }

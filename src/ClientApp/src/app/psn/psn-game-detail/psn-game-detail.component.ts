@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PsnService, PsnTrophy } from '../psn.service';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-psn-game-detail',
@@ -16,6 +17,25 @@ export class PsnGameDetailComponent implements OnInit {
 
   ngOnInit() {
     const gameId = this.route.snapshot.paramMap.get('id');
-    this.trophies$ = this.psnService.getPsnTrophies(gameId);
+
+    const psnTrophies = this.psnService.getPsnTrophies(gameId);
+    const psnUserProgress = this.psnService.getPsnUserProgress(gameId);
+
+    this.trophies$ = forkJoin([psnTrophies, psnUserProgress]).pipe(
+      map(x => {
+        return x[0].map(trophy => {
+          const userProgress = x[1].filter(y => y.trophy.id == trophy.id);
+
+          if (userProgress.length > 0 && userProgress[0].earned) {
+            return {
+              ...trophy,
+              earned: userProgress[0].earned,
+              earnedDate: new Date(userProgress[0].earnedDate),
+            };
+          }
+
+          return trophy;
+        });
+      }));
   }
 }

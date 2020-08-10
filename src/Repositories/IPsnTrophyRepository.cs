@@ -12,6 +12,6 @@ namespace TrackMyGames.Repositories
 
         Task<PsnTrophy> GetTrophyAsync(int psnId, int collectionId);
 
-        Task<IEnumerable<PsnTrophy>> GetTrophyByGameAsync(int gameId);
+        Task<IEnumerable<PsnTrophy>> GetTrophyByGameAsync(int psnGameId);
     }
 }

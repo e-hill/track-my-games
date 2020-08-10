@@ -17,9 +17,9 @@ namespace TrackMyGames.Entities
 
         public string SmallIconUrl { get; set; }
 
-        public int? GameId { get; set; }
+        public int? PsnGameId { get; set; }
 
-        [ForeignKey("GameId")]
-        public virtual GameEntity Game { get; set; }
+        [ForeignKey("PsnGameId")]
+        public virtual PsnGameEntity Game { get; set; }
     }
 }

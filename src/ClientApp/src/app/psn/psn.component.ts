@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PsnService, Game } from './psn.service';
+import { PsnService, PsnGame } from './psn.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
 })
 export class PsnComponent implements OnInit {
 
-  games$: Observable<Game[]>;
+  games$: Observable<PsnGame[]>;
 
   constructor(private psnService: PsnService) { }
 
@@ -24,5 +24,14 @@ export class PsnComponent implements OnInit {
         });
       })
     );
+  }
+
+  progress(game: PsnGame) {
+    return (game.earnedTrophies / game.totalTrophies) * 100;
+  }
+
+  progressColor(game: PsnGame) {
+    return game.earnedTrophies === game.totalTrophies ?
+      'success' : 'info';
   }
 }

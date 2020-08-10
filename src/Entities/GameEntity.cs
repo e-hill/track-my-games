@@ -17,7 +17,5 @@ namespace TrackMyGames.Entities
         public virtual IEnumerable<GameSeriesEntity> GameSeries { get; set; }
 
         public virtual IEnumerable<GoalEntity> Goals { get; set; }
-
-        public virtual PsnTrophyCollectionEntity PsnTrophyCollection { get; set; }
     }
 }

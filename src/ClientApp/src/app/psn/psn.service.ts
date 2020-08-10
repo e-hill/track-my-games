@@ -2,20 +2,21 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export class Game {
+export class PsnGame {
   id: number;
   name: string;
   releaseDate: string;
   system: string;
-  psnTrophyCollection: PsnTrophyCollection;
-}
+  earnedTrophies: number;
+  totalTrophies: number;
 
-class PsnTrophyCollection {
-  id: number;
-  name: string;
-  detail: string;
-  iconUrl: string;
-  smallIconUrl: string;
+  trophyCollection: {
+    id: number;
+    name: string;
+    detail: string;
+    iconUrl: string;
+    smallIconUrl: string;
+  };
 }
 
 export class PsnTrophy {
@@ -31,6 +32,15 @@ export class PsnTrophy {
   psnId: number;
 }
 
+export class PsnUserProgress {
+  earned: boolean;
+  earnedDate: string;
+  onlineId: string;
+  trophy: {
+    id: number;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -38,11 +48,15 @@ export class PsnService {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
-  get(): Observable<Game[]> {
-    return this.http.get<Game[]>(this.baseUrl + 'api/games');
+  get(): Observable<PsnGame[]> {
+    return this.http.get<PsnGame[]>(this.baseUrl + 'api/psn/games');
   }
 
   getPsnTrophies(gameId: string): Observable<PsnTrophy[]> {
-    return this.http.get<PsnTrophy[]>(this.baseUrl + `api/psntrophies/findbygame?gameid=${gameId}`);
+    return this.http.get<PsnTrophy[]>(this.baseUrl + `api/psn/trophies/findbygame?gameid=${gameId}`);
+  }
+
+  getPsnUserProgress(gameId: string): Observable<PsnUserProgress[]> {
+    return this.http.get<PsnUserProgress[]>(this.baseUrl + `api/psn/user-progress/findbygame?gameid=${gameId}`);
   }
 }

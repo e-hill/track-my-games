@@ -43,10 +43,10 @@ namespace TrackMyGames.Repositories
             return _mapper.Map<PsnTrophy>(trophy);
         }
 
-        public async Task<IEnumerable<PsnTrophy>> GetTrophyByGameAsync(int gameId)
+        public async Task<IEnumerable<PsnTrophy>> GetTrophyByGameAsync(int psnGameId)
         {
-            var game = await _dbContext.Games.SingleAsync(x => x.Id == gameId);
-            var trophies = await _dbContext.PsnTrophies.Where(x => x.CollectionId == game.PsnTrophyCollection.Id).ToListAsync();
+            var game = await _dbContext.PsnGames.SingleAsync(x => x.Id == psnGameId);
+            var trophies = await _dbContext.PsnTrophies.Where(x => x.CollectionId == game.TrophyCollection.Id).ToListAsync();
             return _mapper.Map<IEnumerable<PsnTrophy>>(trophies);
         }
     }

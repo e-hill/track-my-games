@@ -6,7 +6,7 @@ namespace TrackMyGames.Pipelines
 {
     public interface IPsnPipeline
     {
-        Task<PsnTrophyCollection> ProcessCollectionUpdate(GetTrophyTitlesResponse.TrophyTitlesResponse trophyTitle);
+        Task<PsnTrophyCollection> ProcessCollectionUpdate(GetTrophyTitlesResponse.TrophyTitlesDetails trophyTitle);
 
         Task ProcessTrophyUpdate(GetTrophiesResponse.TrophiesResponse trophyResponse, string psnId, int collectionId);
     }
