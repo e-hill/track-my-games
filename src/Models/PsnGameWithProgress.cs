@@ -1,10 +1,8 @@
-using TrackMyGames.Models;
-
-namespace TrackMyGames.ViewModels
+namespace TrackMyGames.Models
 {
-    public class PsnGameViewModel
+    public class PsnGameWithProgress
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

@@ -45,5 +45,25 @@ namespace TrackMyGames.Repositories
             var game = await _dbContext.PsnGames.SingleOrDefaultAsync(x => x.Id == gameId);
             return _mapper.Map<PsnGame>(game);
         }
+
+        public async Task<IEnumerable<PsnGameWithProgress>> GetGamesWithProgressAsync(string onlineId)
+        {
+            var games = await GetGamesAsync();
+            var userProgress = await _dbContext.PsnUserProgress
+                .Include(x => x.Trophy)
+                .Where(x => x.OnlineId == onlineId).ToListAsync();
+
+            return from game in games
+                   let progress = userProgress.Where(x => x.Trophy.CollectionId == game.TrophyCollection.Id)
+                   select new PsnGameWithProgress
+                   {
+                       Id = game.Id,
+                       Name = game.Name,
+                       System = game.System,
+                       TrophyCollection = game.TrophyCollection,
+                       EarnedTrophies = progress.Count(x => x.Earned),
+                       TotalTrophies = progress.Count()
+                   };
+        }
     }
 }

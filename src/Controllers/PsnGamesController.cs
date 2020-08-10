@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TrackMyGames.Repositories;
-using TrackMyGames.ViewModels;
 
 namespace TrackMyGames.Controllers
 {
@@ -25,22 +22,9 @@ namespace TrackMyGames.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var games = await _psnGamesRepository.GetGamesAsync();
-            var gameViewModels = new List<PsnGameViewModel>();
-
-            foreach (var game in games)
-            {
-                var gameViewModel = _mapper.Map<PsnGameViewModel>(game);
-
-                var onlineId = "quintaglio";
-                var userProgress = await _userProgressRepository.GetUserProgressByOnlineIdAndGameAsync(onlineId, game.Id);
-                gameViewModel.EarnedTrophies = userProgress.Count(x => x.Earned);
-                gameViewModel.TotalTrophies = userProgress.Count();
-
-                gameViewModels.Add(gameViewModel);
-            }
-
-            return Ok(gameViewModels);
+            var onlineId = "quintaglio";
+            var games = await _psnGamesRepository.GetGamesWithProgressAsync(onlineId);
+            return Ok(games);
         }
 
         [HttpGet("{id}")]

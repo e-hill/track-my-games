@@ -13,5 +13,7 @@ namespace TrackMyGames.Repositories
         Task<IEnumerable<PsnGame>> GetGamesAsync();
 
         Task<PsnGame> GetGameAsync(int gameId);
+
+        Task<IEnumerable<PsnGameWithProgress>> GetGamesWithProgressAsync(string onlineId);
     }
 }
