@@ -1,3 +1,6 @@
+<div class="mb-3 float-right">
+  <button [routerLink]="['create']" type="button" class="btn btn-primary">Add Game</button>
+</div>
 <table class="table table-striped">
   <caption>All Games</caption>
   <thead>
@@ -17,9 +20,14 @@
       <td>{{game.system}}</td>
       <td>{{game.developer}}</td>
       <td>{{game.publisher}}</td>
-      <td style="text-align: center;">
+      <td *ngIf="game.goals && game.goals.length > 0; else noGoals" style="text-align: center;">
         <p class="mb-0" *ngFor="let goal of game.goals">{{goal.name}}</p>
       </td>
+      <ng-template #noGoals>
+        <td style="text-align: center;">
+          <a [routerLink]="[game.id, 'goals']">Add Goals</a>
+        </td>
+      </ng-template>
     </tr>
   </tbody>
 </table>

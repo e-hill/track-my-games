@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 export class Game {
   id: number;
@@ -16,7 +17,11 @@ export class GamesService {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
-  get(): Observable<Game[]> {
+  getGame(): Observable<Game[]> {
     return this.http.get<Game[]>(this.baseUrl + 'api/games');
+  }
+
+  addGame(game: Game) {
+    return this.http.post(this.baseUrl + 'api/games', game);
   }
 }

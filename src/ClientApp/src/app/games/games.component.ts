@@ -15,7 +15,7 @@ export class GamesComponent implements OnInit {
   constructor(private gamesService: GamesService) { }
 
   ngOnInit(): void {
-    this.games$ = this.gamesService.get().pipe(
+    this.games$ = this.gamesService.getGame().pipe(
       tap(games => {
         games.sort((a, b) => {
           if (a.name > b.name) return 1;

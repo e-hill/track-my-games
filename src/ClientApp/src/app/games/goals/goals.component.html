@@ -1,0 +1,8 @@
+<div *ngFor="let goal of goals$ | async; index as i">
+  <form class="form-inline mb-3" (ngSubmit)="saveGoals()">
+    <input type="text" class="form-control col-5 mr-sm-2" id="game-name" placeholder="Name" required>
+    <button type="button" class="btn btn-primary col-1 mr-sm-2" (click)="removeGoal(i)">Remove</button>
+    <button type="submit" class="btn btn-primary col-1 mr-sm-2">Update</button>
+  </form>
+</div>
+<button type="button" class="btn btn-primary" (click)="addGoal()">Add</button>
