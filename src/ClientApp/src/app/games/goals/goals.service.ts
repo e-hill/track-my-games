@@ -16,7 +16,6 @@ export class GoalsService {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   getGoals(gameId: string): Observable<Goal[]> {
-    return of([]);
     return this.http.get<Goal[]>(this.baseUrl + `api/games/${gameId}/goals`);
   }
 

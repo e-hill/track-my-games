@@ -30,6 +30,11 @@ namespace TrackMyGames.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var game = await _gamesRepository.GetGameAsync(id);
+            if (game == null)
+            {
+                return NotFound();
+            }
+
             return Ok(game);
         }
 
@@ -44,6 +49,18 @@ namespace TrackMyGames.Controllers
             var game = _mapper.Map<Game>(gameToCreate);
             var createdGame = await _gamesRepository.AddGameAsync(game);
             return CreatedAtAction(nameof(Get), new { id = createdGame.Id }, createdGame);
+        }
+
+        [HttpGet("{gameId}/goals")]
+        public async Task<IActionResult> GetGoals(int gameId)
+        {
+            var game = await _gamesRepository.GetGameAsync(gameId);
+            if (game == null)
+            {
+                return BadRequest($"Game {gameId} not found");
+            }
+
+            return Ok(game.Goals ?? new Goal[0]);
         }
     }
 }
