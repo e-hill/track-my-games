@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { GoalsService, Goal } from './goals.service';
-import { take, tap, map } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-goals',
@@ -12,25 +11,31 @@ import { Observable, of } from 'rxjs';
 })
 export class GoalsComponent implements OnInit {
   gameId: string;
-  goals$: Observable<Goal[]>;
 
-  constructor(private goalsService: GoalsService, private route: ActivatedRoute) { }
+  goalsForm: FormGroup = this.fb.group({
+    goals: this.fb.array([], Validators.required)
+  });
+
+  get goals() {
+    return this.goalsForm.get('goals') as FormArray;
+  }
+
+  constructor(private goalsService: GoalsService, private route: ActivatedRoute, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id');
-    this.goals$ = this.goalsService.getGoals(this.gameId);
+
+    this.goalsService.getGoals(this.gameId)
+      .pipe(take(1))
+      .subscribe(goals => goals.map(goal => this.addGoal(goal)));
   }
 
-  addGoal() {
-    this.goals$.pipe(take(1))
-      .pipe(tap(x => x.push(new Goal())))
-      .subscribe(x => this.goals$ = of(x));
+  addGoal(goal: Goal = new Goal()) {
+    this.goals.push(this.fb.control(goal.name, Validators.required));
   }
 
   removeGoal(index: number) {
-    this.goals$.pipe(take(1))
-      .pipe(tap(x => x.splice(index, 1)))
-      .subscribe(x => this.goals$ = of(x));
+    this.goals.removeAt(index);
   }
 
   saveGoals() {

@@ -1,8 +1,10 @@
-<form [class.mb-3]="!isLast" (ngSubmit)="saveGoals()">
+<form [formGroup]="goalsForm" (ngSubmit)="saveGoals()">
   <button type="button" class="btn btn-primary col-1 mb-3 mr-2" (click)="addGoal()">Add</button>
-  <button type="button" class="btn btn-primary col-1 mb-3" (click)="saveGoals()">Save</button>
-  <div class="form-inline mb-3" *ngFor="let goal of goals$ | async; index as i">
-    <input type="text" class="form-control col-8 mr-sm-2" placeholder="Name" required>
-    <button type="button" class="btn btn-primary col-1 mr-sm-2" (click)="removeGoal(i)">Remove</button>
+  <button type="submit" class="btn btn-primary col-1 mb-3" [disabled]="!goalsForm.valid">Save</button>
+  <div formArrayName="goals">
+    <div class="form-inline mb-3" *ngFor="let goal of goals.controls; let i = index">
+      <input type="text" class="form-control col-8 mr-sm-2" placeholder="Name" [formControlName]="i" required>
+      <button type="button" class="btn btn-primary" (click)="removeGoal(i)">Remove</button>
+    </div>
   </div>
 </form>
