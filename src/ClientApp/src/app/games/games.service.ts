@@ -8,6 +8,7 @@ export class Game {
   name: string;
   releaseDate: string;
   system: string;
+  archived: boolean;
   developers: string[];
   publishers: string[];
   goals: Goal[];
@@ -46,6 +47,10 @@ export class GamesService {
         op: 'add',
         path: '/system',
         value: game.system
+      }, {
+        op: 'add',
+        path: '/archived',
+        value: game.archived
       }, {
         op: 'add',
         path: '/developers',

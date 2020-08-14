@@ -14,6 +14,9 @@ namespace TrackMyGames.ViewModels
         [Required]
         public string System { get; set; }
 
+        [Required]
+        public bool Archived { get; set; }
+
         public IEnumerable<string> Developers { get; set; }
 
         public IEnumerable<string> Publishers { get; set; }

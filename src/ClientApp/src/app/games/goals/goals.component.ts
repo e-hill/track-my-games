@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { GoalsService, Goal, NewGoal } from './goals.service';
 import { take } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-goals',
@@ -20,7 +20,7 @@ export class GoalsComponent implements OnInit {
     return this.goalsForm.get('goals') as FormArray;
   }
 
-  constructor(private goalsService: GoalsService, private route: ActivatedRoute, private fb: FormBuilder) { }
+  constructor(private goalsService: GoalsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id');
@@ -49,6 +49,6 @@ export class GoalsComponent implements OnInit {
 
     this.goalsService.addGoals(goals, this.gameId)
       .pipe(take(1))
-      .subscribe((x) => console.log(x));
+      .subscribe(_ => { this.router.navigate(['../..'], { relativeTo: this.route }) });
   }
 }

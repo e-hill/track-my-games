@@ -15,7 +15,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let game of games$ | async">
-      <td [class.text-primary]="complete(game)"><a [routerLink]="[game.id]">{{game.name}}</a></td>
+      <td><a [class]="getNameClass(game)" [routerLink]="[game.id]">{{game.name}}</a></td>
       <td>{{game.releaseDate}}</td>
       <td>{{game.system}}</td>
       <td>{{game.developers.join(', ')}}</td>

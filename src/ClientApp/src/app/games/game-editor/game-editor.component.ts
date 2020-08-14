@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GamesService, Game } from '../games.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -15,11 +15,12 @@ export class GameEditorComponent implements OnInit {
     name: this.fb.control('', Validators.required),
     releaseDate: this.fb.control('', Validators.required),
     system: this.fb.control('', Validators.required),
+    archived: this.fb.control(false),
     developer: this.fb.control(''),
     publisher: this.fb.control('')
   });
 
-  constructor(private gamesService: GamesService, private fb: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private gamesService: GamesService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id');
@@ -31,6 +32,7 @@ export class GameEditorComponent implements OnInit {
           name: game.name,
           releaseDate: game.releaseDate,
           system: game.system,
+          archived: game.archived,
           developer: this.defaultIfEmpty(game.developers),
           publisher: this.defaultIfEmpty(game.publishers),
         });
@@ -46,6 +48,7 @@ export class GameEditorComponent implements OnInit {
     game.name = this.gameForm.get('name').value;
     game.releaseDate = this.gameForm.get('releaseDate').value;
     game.system = this.gameForm.get('system').value;
+    game.archived = this.gameForm.get('archived').value;
 
     const developer = this.gameForm.get('developer').value;
     if (developer !== '') {
@@ -59,6 +62,6 @@ export class GameEditorComponent implements OnInit {
 
     this.gamesService.updateGame(game, this.gameId)
       .pipe(take(1))
-      .subscribe((x) => console.log(x));
+      .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 }

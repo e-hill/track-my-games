@@ -34,4 +34,8 @@ export class PsnComponent implements OnInit {
     return game.earnedTrophies === game.totalTrophies ?
       'success' : 'info';
   }
+
+  hoverText(game: PsnGame) {
+    return `Trophies: ${game.earnedTrophies} of ${game.totalTrophies}`;
+  }
 }

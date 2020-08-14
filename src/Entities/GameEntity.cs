@@ -10,6 +10,8 @@ namespace TrackMyGames.Entities
 
         public string System { get; set; }
 
+        public bool Archived { get; set; }
+
         public virtual IEnumerable<GameDeveloperEntity> GameDevelopers { get; set; }
 
         public virtual IEnumerable<GamePublisherEntity> GamePublishers { get; set; }

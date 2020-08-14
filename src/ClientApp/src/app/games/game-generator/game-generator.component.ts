@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { GamesService, Game } from '../games.service';
-import { catchError, takeUntil, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game-generator',
@@ -11,7 +12,7 @@ import { catchError, takeUntil, take } from 'rxjs/operators';
 export class GameGeneratorComponent implements OnInit {
   gameForm: FormGroup;
 
-  constructor(private gamesService: GamesService, private fb: FormBuilder) { }
+  constructor(private gamesService: GamesService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.gameForm = this.fb.group({
@@ -29,8 +30,18 @@ export class GameGeneratorComponent implements OnInit {
     game.releaseDate = this.gameForm.get('releaseDate').value;
     game.system = this.gameForm.get('system').value;
 
+    const developer = this.gameForm.get('developer').value;
+    if (developer !== '') {
+      game.developers = [developer];
+    }
+
+    const publisher = this.gameForm.get('publisher').value;
+    if (publisher !== '') {
+      game.publishers = [publisher];
+    }
+
     this.gamesService.addGame(game)
       .pipe(take(1))
-      .subscribe((x) => console.log(x));
+      .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 }

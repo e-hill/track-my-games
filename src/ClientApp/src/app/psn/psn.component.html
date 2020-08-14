@@ -1,5 +1,6 @@
 <div class="d-flex flex-wrap">
-  <a [routerLink]="[game.id]" class="custom-card" *ngFor="let game of games$ | async">
+  <a [routerLink]="[game.id]" class="custom-card" *ngFor="let game of games$ | async" data-toggle="tooltip"
+    data-placement="top" title="{{hoverText(game)}}">
     <div class="card m-4" style="width: 18rem;">
       <img class="card-img-top" src="{{ game.trophyCollection.iconUrl }}" alt="Card image cap">
       <div class="card-body">

@@ -67,6 +67,8 @@ namespace TrackMyGames.Repositories
                 gameEntity.Name = updatedGameEntity.Name;
                 gameEntity.ReleaseDate = updatedGameEntity.ReleaseDate;
                 gameEntity.System = updatedGameEntity.System;
+                gameEntity.Archived = updatedGameEntity.Archived;
+
                 _dbContext.Games.Update(gameEntity);
 
                 var developerEntity = await _dbContext.GameDevelopers.FirstOrDefaultAsync(x => x.GameId == game.Id);

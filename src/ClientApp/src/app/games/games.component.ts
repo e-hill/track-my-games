@@ -26,7 +26,17 @@ export class GamesComponent implements OnInit {
     );
   }
 
-  complete(game: Game) {
-    return game.goals.every(x => x.completed);
+  getNameClass(game: Game) {
+    if (game.archived) {
+      return 'text-muted';
+    }
+
+    if (game.goals && game.goals.length > 0) {
+      if (game.goals.every(x => x.completed)) {
+        return 'text-primary';
+      }
+    }
+
+    return 'text-dark';
   }
 }
