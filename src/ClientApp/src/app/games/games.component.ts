@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GamesService, Game } from './games.service';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-games',
@@ -9,7 +9,6 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./games.component.scss']
 })
 export class GamesComponent implements OnInit {
-
   games$: Observable<Game[]>;
 
   constructor(private gamesService: GamesService) { }
@@ -20,7 +19,11 @@ export class GamesComponent implements OnInit {
         games.sort((a, b) => {
           if (a.name > b.name) return 1;
           else if (a.name < b.name) return -1;
-          else return 0;
+          else {
+            if (a.releaseDate > b.releaseDate) return 1;
+            else if (a.releaseDate < b.releaseDate) return -1;
+            else return 0;
+          };
         });
       })
     );

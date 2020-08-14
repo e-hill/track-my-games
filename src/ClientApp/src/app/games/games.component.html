@@ -4,12 +4,13 @@
     <button [routerLink]="['create']" type="button" class="btn btn-primary">Add Game</button>
   </div>
 </div>
+<input class="form-control" id="filter-games" type="text" placeholder="Search.." #filterGames (keyup)="0">
 <table class="table table-striped">
   <caption>All Games</caption>
   <thead>
     <tr>
       <th scope="col">Name</th>
-      <th scope="col">Release Date</th>
+      <th scope="col" style="text-align: center;">Release Date</th>
       <th scope="col">System</th>
       <th scope="col">Developer</th>
       <th scope="col">Publisher</th>
@@ -17,17 +18,21 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let game of games$ | async">
+    <tr *ngFor="let game of games$ | async | filterOnName : filterGames.value">
       <td><a [class]="getNameClass(game)" [routerLink]="[game.id]">{{game.name}}</a></td>
-      <td>{{game.releaseDate}}</td>
+      <td style="text-align: center">{{game.releaseDate}}</td>
       <td>{{game.system}}</td>
       <td>{{game.developers.join(', ')}}</td>
       <td>{{game.publishers.join(', ')}}</td>
-      <td *ngIf=" game.goals && game.goals.length> 0; else noGoals" [routerLink]="[game.id, 'goals']"
-        style="text-align: center;">
-        <p class="mb-0" [class.complete]="goal.completed" *ngFor="let goal of game.goals">{{goal.name}} -
-          {{goal.earned}}/{{goal.total}}</p>
-      </td>
+      <td *ngIf="game.archived; else notArchived"></td>
+      <ng-template #notArchived>
+        <td *ngIf="game.goals && game.goals.length> 0; else noGoals" [routerLink]="[game.id, 'goals']"
+          style="text-align: center">
+          <p class="mb-0" [class.complete]="goal.completed" *ngFor="let goal of game.goals">
+            {{goal.name}} -
+            {{goal.earned}}/{{goal.total}}</p>
+        </td>
+      </ng-template>
       <ng-template #noGoals>
         <td style="text-align: center;">
           <a [routerLink]="[game.id, 'goals']">Add Goals</a>
