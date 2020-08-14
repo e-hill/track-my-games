@@ -12,6 +12,10 @@ namespace TrackMyGames.Models
 
         public string System { get; set; }
 
+        public IEnumerable<string> Developers { get; set; }
+
+        public IEnumerable<string> Publishers { get; set; }
+
         public IEnumerable<Goal> Goals { get; set; }
     }
 }

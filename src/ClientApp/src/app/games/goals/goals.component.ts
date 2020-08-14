@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
-import { GoalsService, Goal } from './goals.service';
+import { GoalsService, Goal, NewGoal } from './goals.service';
 import { take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
@@ -31,7 +31,13 @@ export class GoalsComponent implements OnInit {
   }
 
   addGoal(goal: Goal = new Goal()) {
-    this.goals.push(this.fb.control(goal.name, Validators.required));
+    const group = this.fb.group({
+      'name': this.fb.control(goal.name, Validators.required),
+      'earned': this.fb.control(goal.earned),
+      'total': this.fb.control(goal.total, Validators.min(1))
+    });
+
+    this.goals.push(group);
   }
 
   removeGoal(index: number) {
@@ -39,7 +45,7 @@ export class GoalsComponent implements OnInit {
   }
 
   saveGoals() {
-    const goals = [];
+    const goals = this.goals.controls.map(ctrl => ctrl.value);
 
     this.goalsService.addGoals(goals, this.gameId)
       .pipe(take(1))

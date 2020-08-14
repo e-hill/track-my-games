@@ -6,8 +6,12 @@ namespace TrackMyGames.Models
 
         public string Name { get; set; }
 
-        public int? GameId { get; set; }
+        public int Earned { get; set; }
 
-        public const string PsnTrophiesName = "PSN Trophies";
+        public int Total { get; set; }
+
+        public bool Completed { get; set; }
+
+        public int? GameId { get; set; }
     }
 }

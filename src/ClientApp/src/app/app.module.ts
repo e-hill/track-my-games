@@ -12,6 +12,7 @@ import { PsnComponent } from './psn/psn.component';
 import { PsnGameDetailComponent } from './psn/psn-game-detail/psn-game-detail.component';
 import { GameGeneratorComponent } from './games/game-generator/game-generator.component';
 import { GoalsComponent } from './games/goals/goals.component';
+import { GameEditorComponent } from './games/game-editor/game-editor.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { GoalsComponent } from './games/goals/goals.component';
     PsnGameDetailComponent,
     GameGeneratorComponent,
     GoalsComponent,
+    GameEditorComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -6,11 +6,13 @@ import { PsnComponent } from './psn/psn.component';
 import { PsnGameDetailComponent } from './psn/psn-game-detail/psn-game-detail.component';
 import { GameGeneratorComponent } from './games/game-generator/game-generator.component';
 import { GoalsComponent } from './games/goals/goals.component';
+import { GameEditorComponent } from './games/game-editor/game-editor.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'games', component: GamesComponent },
   { path: 'games/create', component: GameGeneratorComponent },
+  { path: 'games/:id', component: GameEditorComponent },
   { path: 'games/:id/goals', component: GoalsComponent },
   { path: 'psn', component: PsnComponent },
   { path: 'psn/:id', component: PsnGameDetailComponent }

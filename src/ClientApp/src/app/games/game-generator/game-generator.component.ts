@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { GamesService, Game } from '../games.service';
 import { catchError, takeUntil, take } from 'rxjs/operators';
 
@@ -11,13 +11,15 @@ import { catchError, takeUntil, take } from 'rxjs/operators';
 export class GameGeneratorComponent implements OnInit {
   gameForm: FormGroup;
 
-  constructor(private gamesService: GamesService) { }
+  constructor(private gamesService: GamesService, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.gameForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      releaseDate: new FormControl('', Validators.required),
-      system: new FormControl('', Validators.required),
+    this.gameForm = this.fb.group({
+      name: this.fb.control('', Validators.required),
+      releaseDate: this.fb.control('', Validators.required),
+      system: this.fb.control('', Validators.required),
+      developer: this.fb.control(''),
+      publisher: this.fb.control('')
     });
   }
 

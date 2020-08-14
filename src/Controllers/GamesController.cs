@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TrackMyGames.Models;
 using TrackMyGames.Repositories;
@@ -51,16 +52,22 @@ namespace TrackMyGames.Controllers
             return CreatedAtAction(nameof(Get), new { id = createdGame.Id }, createdGame);
         }
 
-        [HttpGet("{gameId}/goals")]
-        public async Task<IActionResult> GetGoals(int gameId)
+        [HttpPatch("{gameId}")]
+        public async Task<IActionResult> Patch([FromBody] JsonPatchDocument<CreateGameViewModel> patchDocument, int gameId)
         {
-            var game = await _gamesRepository.GetGameAsync(gameId);
-            if (game == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest($"Game {gameId} not found");
+                return BadRequest(ModelState);
             }
 
-            return Ok(game.Goals ?? new Goal[0]);
+            var gameToUpdate = new CreateGameViewModel();
+            patchDocument.ApplyTo(gameToUpdate);
+
+            var game = _mapper.Map<Game>(gameToUpdate);
+            game.Id = gameId;
+
+            var updatedGame = await _gamesRepository.UpdateGameAsync(game);
+            return Ok(updatedGame);
         }
     }
 }

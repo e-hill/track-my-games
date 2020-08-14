@@ -5,7 +5,14 @@ import { Observable, of } from 'rxjs';
 export class Goal {
   id: string;
   name: string;
+  earned: number;
+  total: number;
+  completed: boolean;
   gameId: string;
+}
+
+export class NewGoal {
+  constructor(private name: string) { }
 }
 
 @Injectable({
@@ -19,7 +26,7 @@ export class GoalsService {
     return this.http.get<Goal[]>(this.baseUrl + `api/games/${gameId}/goals`);
   }
 
-  addGoals(goals: Goal[], gameId: string) {
+  addGoals(goals: NewGoal[], gameId: string) {
     return this.http.post(this.baseUrl + `api/games/${gameId}/goals`, goals);
   }
 }

@@ -2,20 +2,36 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrackMyGames.DbContexts;
 
 namespace TrackMyGames.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200812183642_AddCounterToGoalTable")]
+    partial class AddCounterToGoalTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("TrackMyGames.Entities.DeveloperEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Developers");
+                });
 
             modelBuilder.Entity("TrackMyGames.Entities.GameDeveloperEntity", b =>
                 {
@@ -23,13 +39,15 @@ namespace TrackMyGames.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("DeveloperId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("DeveloperId");
 
                     b.HasIndex("GameId");
 
@@ -65,12 +83,14 @@ namespace TrackMyGames.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<int>("PublisherId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GameId");
+
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("GamePublishers");
                 });
@@ -282,6 +302,20 @@ namespace TrackMyGames.Migrations
                     b.ToTable("PsnUserProgress");
                 });
 
+            modelBuilder.Entity("TrackMyGames.Entities.PublisherEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Publishers");
+                });
+
             modelBuilder.Entity("TrackMyGames.Entities.SeriesEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -298,6 +332,12 @@ namespace TrackMyGames.Migrations
 
             modelBuilder.Entity("TrackMyGames.Entities.GameDeveloperEntity", b =>
                 {
+                    b.HasOne("TrackMyGames.Entities.DeveloperEntity", "Developer")
+                        .WithMany("GameDevelopers")
+                        .HasForeignKey("DeveloperId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TrackMyGames.Entities.GameEntity", "Game")
                         .WithMany("GameDevelopers")
                         .HasForeignKey("GameId")
@@ -310,6 +350,12 @@ namespace TrackMyGames.Migrations
                     b.HasOne("TrackMyGames.Entities.GameEntity", "Game")
                         .WithMany("GamePublishers")
                         .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrackMyGames.Entities.PublisherEntity", "Publisher")
+                        .WithMany("GamePublishers")
+                        .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

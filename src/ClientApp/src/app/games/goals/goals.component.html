@@ -2,9 +2,13 @@
   <button type="button" class="btn btn-primary col-1 mb-3 mr-2" (click)="addGoal()">Add</button>
   <button type="submit" class="btn btn-primary col-1 mb-3" [disabled]="!goalsForm.valid">Save</button>
   <div formArrayName="goals">
-    <div class="form-inline mb-3" *ngFor="let goal of goals.controls; let i = index">
-      <input type="text" class="form-control col-8 mr-sm-2" placeholder="Name" [formControlName]="i" required>
-      <button type="button" class="btn btn-primary" (click)="removeGoal(i)">Remove</button>
+    <div class="form-inline mb-3" *ngFor="let _ of goals.controls; index as i">
+      <ng-container [formGroupName]="i">
+        <input type="text" class="form-control col-6 mr-sm-2" placeholder="Name" formControlName="name" required>
+        <input type="number" class="form-control col-2 mr-sm-2" placeholder="Earned" formControlName="earned" required>
+        <input type="number" class="form-control col-2 mr-sm-2" placeholder="Total" formControlName="total" required>
+        <button type="button" class="btn btn-primary" (click)="removeGoal(i)">Remove</button>
+      </ng-container>
     </div>
   </div>
 </form>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TrackMyGames.ViewModels
@@ -12,5 +13,9 @@ namespace TrackMyGames.ViewModels
 
         [Required]
         public string System { get; set; }
+
+        public IEnumerable<string> Developers { get; set; }
+
+        public IEnumerable<string> Publishers { get; set; }
     }
 }

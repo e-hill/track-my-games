@@ -15,13 +15,15 @@
   </thead>
   <tbody>
     <tr *ngFor="let game of games$ | async">
-      <td>{{game.name}}</td>
+      <td [class.text-primary]="complete(game)"><a [routerLink]="[game.id]">{{game.name}}</a></td>
       <td>{{game.releaseDate}}</td>
       <td>{{game.system}}</td>
-      <td>{{game.developer}}</td>
-      <td>{{game.publisher}}</td>
-      <td *ngIf="game.goals && game.goals.length > 0; else noGoals" style="text-align: center;">
-        <p class="mb-0" *ngFor="let goal of game.goals">{{goal.name}}</p>
+      <td>{{game.developers.join(', ')}}</td>
+      <td>{{game.publishers.join(', ')}}</td>
+      <td *ngIf=" game.goals && game.goals.length> 0; else noGoals" [routerLink]="[game.id, 'goals']"
+        style="text-align: center;">
+        <p class="mb-0" [class.complete]="goal.completed" *ngFor="let goal of game.goals">{{goal.name}} -
+          {{goal.earned}}/{{goal.total}}</p>
       </td>
       <ng-template #noGoals>
         <td style="text-align: center;">

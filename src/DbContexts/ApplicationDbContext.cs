@@ -5,8 +5,6 @@ namespace TrackMyGames.DbContexts
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<DeveloperEntity> Developers { get; set; }
-
         public DbSet<GameDeveloperEntity> GameDevelopers { get; set; }
 
         public DbSet<GameEntity> Games { get; set; }
@@ -26,8 +24,6 @@ namespace TrackMyGames.DbContexts
         public DbSet<PsnTrophyGroupEntity> PsnTrophyGroups { get; set; }
 
         public DbSet<PsnUserProgressEntity> PsnUserProgress { get; set; }
-
-        public DbSet<PublisherEntity> Publishers { get; set; }
 
         public DbSet<SeriesEntity> Series { get; set; }
 

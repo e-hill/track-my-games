@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -18,21 +21,27 @@ namespace TrackMyGames.Repositories
             _mapper = mapper;
         }
 
-        public async Task<Goal> AddAsync(Goal goal)
+        public async Task<IEnumerable<Goal>> ReplaceGoalsAsync(IEnumerable<Goal> goals, int gameId)
         {
-            var entity = _mapper.Map<GoalEntity>(goal);
-            await _dbContext.Goals.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return _mapper.Map<Goal>(entity);
+            var newGoals = _mapper.Map<IEnumerable<GoalEntity>>(goals);
+            newGoals = await LinkGoalsAsync(newGoals, gameId);
+            var oldGoals = _dbContext.Goals.Where(x => x.GameId == gameId);
+
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+            {
+                _dbContext.Goals.RemoveRange(oldGoals);
+                await _dbContext.Goals.AddRangeAsync(newGoals);
+                await _dbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+
+            return _mapper.Map<IEnumerable<Goal>>(newGoals);
         }
 
-        public async Task LinkGameAsync(int goalId, int gameId)
+        private async Task<IEnumerable<GoalEntity>> LinkGoalsAsync(IEnumerable<GoalEntity> goals, int gameId)
         {
-            var goal = await _dbContext.Goals.SingleAsync(x => x.Id == goalId);
-            goal.Game = await _dbContext.Games.SingleAsync(x => x.Id == gameId);
-
-            _dbContext.Goals.Update(goal);
-            await _dbContext.SaveChangesAsync();
+            var game = await _dbContext.Games.SingleOrDefaultAsync(x => x.Id == gameId);
+            return goals.Select(x => { x.Game = game; return x; });
         }
     }
 }
