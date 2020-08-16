@@ -19,6 +19,7 @@ export class GameGeneratorComponent implements OnInit {
       name: this.fb.control('', Validators.required),
       releaseDate: this.fb.control('', Validators.required),
       system: this.fb.control('', Validators.required),
+      archived: this.fb.control(false),
       developer: this.fb.control(''),
       publisher: this.fb.control('')
     });
@@ -29,6 +30,7 @@ export class GameGeneratorComponent implements OnInit {
     game.name = this.gameForm.get('name').value;
     game.releaseDate = this.gameForm.get('releaseDate').value;
     game.system = this.gameForm.get('system').value;
+    game.archived = this.gameForm.get('archived').value;
 
     const developer = this.gameForm.get('developer').value;
     if (developer !== '') {

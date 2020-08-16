@@ -4,8 +4,8 @@
     <button [routerLink]="['create']" type="button" class="btn btn-primary">Add Game</button>
   </div>
 </div>
-<input class="form-control" id="filter-games" type="text" placeholder="Search.." #filterGames (keyup)="0">
-<table class="table table-striped">
+<input class="form-control mb-3" id="filter-games" type="text" placeholder="Search.." #filterGames (keyup)="0">
+<table class="table table-hover table-sm">
   <caption>All Games</caption>
   <thead>
     <tr>
@@ -20,7 +20,7 @@
   <tbody>
     <tr *ngFor="let game of games$ | async | filterOnName : filterGames.value">
       <td><a [class]="getNameClass(game)" [routerLink]="[game.id]">{{game.name}}</a></td>
-      <td style="text-align: center">{{game.releaseDate}}</td>
+      <td style="text-align: center">{{game.releaseDate | date:'MM/dd/yyyy'}}</td>
       <td>{{game.system}}</td>
       <td>{{game.developers.join(', ')}}</td>
       <td>{{game.publishers.join(', ')}}</td>

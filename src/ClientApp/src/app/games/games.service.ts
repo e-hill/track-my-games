@@ -9,6 +9,7 @@ export class Game {
   releaseDate: string;
   system: string;
   archived: boolean;
+  complete: boolean;
   developers: string[];
   publishers: string[];
   goals: Goal[];
@@ -33,6 +34,54 @@ export class GamesService {
     return this.http.post(this.baseUrl + 'api/games', game);
   }
 
+  unarchiveGame(gameId: string) {
+    var body = [
+      {
+        op: 'add',
+        path: '/archived',
+        value: 'false'
+      },
+    ];
+
+    return this.http.patch(this.baseUrl + `api/games/${gameId}`, body);
+  }
+
+  archiveGame(gameId: string) {
+    var body = [
+      {
+        op: 'add',
+        path: '/archived',
+        value: 'true'
+      },
+    ];
+
+    return this.http.patch(this.baseUrl + `api/games/${gameId}`, body);
+  }
+
+  uncompleteGame(gameId: string) {
+    var body = [
+      {
+        op: 'add',
+        path: '/complete',
+        value: 'false'
+      },
+    ];
+
+    return this.http.patch(this.baseUrl + `api/games/${gameId}`, body);
+  }
+
+  completeGame(gameId: string) {
+    var body = [
+      {
+        op: 'add',
+        path: '/complete',
+        value: 'true'
+      },
+    ];
+
+    return this.http.patch(this.baseUrl + `api/games/${gameId}`, body);
+  }
+
   updateGame(game: Game, gameId: string) {
     var body = [
       {
@@ -47,10 +96,6 @@ export class GamesService {
         op: 'add',
         path: '/system',
         value: game.system
-      }, {
-        op: 'add',
-        path: '/archived',
-        value: game.archived
       }, {
         op: 'add',
         path: '/developers',

@@ -68,6 +68,7 @@ namespace TrackMyGames.Repositories
                 gameEntity.ReleaseDate = updatedGameEntity.ReleaseDate;
                 gameEntity.System = updatedGameEntity.System;
                 gameEntity.Archived = updatedGameEntity.Archived;
+                gameEntity.Complete = updatedGameEntity.Complete;
 
                 _dbContext.Games.Update(gameEntity);
 

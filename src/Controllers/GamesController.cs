@@ -53,18 +53,15 @@ namespace TrackMyGames.Controllers
         }
 
         [HttpPatch("{gameId}")]
-        public async Task<IActionResult> Patch([FromBody] JsonPatchDocument<CreateGameViewModel> patchDocument, int gameId)
+        public async Task<IActionResult> Patch([FromBody] JsonPatchDocument<Game> patchDocument, int gameId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var gameToUpdate = new CreateGameViewModel();
-            patchDocument.ApplyTo(gameToUpdate);
-
-            var game = _mapper.Map<Game>(gameToUpdate);
-            game.Id = gameId;
+            var game = await _gamesRepository.GetGameAsync(gameId);
+            patchDocument.ApplyTo(game);
 
             var updatedGame = await _gamesRepository.UpdateGameAsync(game);
             return Ok(updatedGame);

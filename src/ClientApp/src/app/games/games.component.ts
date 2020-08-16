@@ -30,14 +30,18 @@ export class GamesComponent implements OnInit {
   }
 
   getNameClass(game: Game) {
-    if (game.archived) {
-      return 'text-muted';
-    }
-
     if (game.goals && game.goals.length > 0) {
       if (game.goals.every(x => x.completed)) {
         return 'text-primary';
       }
+    }
+
+    if (game.complete) {
+      return 'text-warning';
+    }
+
+    if (game.archived) {
+      return 'text-super-muted';
     }
 
     return 'text-dark';

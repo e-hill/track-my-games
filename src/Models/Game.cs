@@ -14,6 +14,8 @@ namespace TrackMyGames.Models
 
         public bool Archived { get; set; }
 
+        public bool Complete { get; set; }
+
         public IEnumerable<string> Developers { get; set; }
 
         public IEnumerable<string> Publishers { get; set; }

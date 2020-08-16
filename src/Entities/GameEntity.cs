@@ -12,6 +12,8 @@ namespace TrackMyGames.Entities
 
         public bool Archived { get; set; }
 
+        public bool Complete { get; set; }
+
         public virtual IEnumerable<GameDeveloperEntity> GameDevelopers { get; set; }
 
         public virtual IEnumerable<GamePublisherEntity> GamePublishers { get; set; }
