@@ -232,3 +232,6 @@ _Pvt_Extensions
 
 # Docker files
 .env
+
+# Visual Studio Code
+.vscode/

@@ -14,6 +14,8 @@ import { GameGeneratorComponent } from './games/game-generator/game-generator.co
 import { GoalsComponent } from './games/goals/goals.component';
 import { GameEditorComponent } from './games/game-editor/game-editor.component';
 import { FilterOnNamePipe } from './games/games.pipe';
+import { SeriesComponent } from './series/series.component';
+import { SeriesGeneratorComponent } from './series/series-generator/series-generator.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { FilterOnNamePipe } from './games/games.pipe';
     GoalsComponent,
     GameEditorComponent,
     FilterOnNamePipe,
+    SeriesComponent,
+    SeriesGeneratorComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

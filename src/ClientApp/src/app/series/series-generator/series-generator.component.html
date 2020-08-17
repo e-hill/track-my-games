@@ -1,0 +1,7 @@
+<form [formGroup]="seriesForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="series-name">Name</label>
+    <input type="text" class="form-control" id="series-name" placeholder="Name" formControlName="name" required>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="!seriesForm.valid">Submit</button>
+</form>
