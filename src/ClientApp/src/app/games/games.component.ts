@@ -39,7 +39,7 @@ export class GamesComponent implements OnInit {
         return 'text-primary';
       }
 
-      return 'text-warning';
+      return 'text-completed';
     }
 
     if (game.goals && game.goals.length > 0) {
