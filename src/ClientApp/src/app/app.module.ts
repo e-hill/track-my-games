@@ -16,6 +16,7 @@ import { GameEditorComponent } from './games/game-editor/game-editor.component';
 import { FilterOnNamePipe } from './games/games.pipe';
 import { SeriesComponent } from './series/series.component';
 import { SeriesGeneratorComponent } from './series/series-generator/series-generator.component';
+import { SeriesEditorComponent } from './series/series-editor/series-editor.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SeriesGeneratorComponent } from './series/series-generator/series-gener
     FilterOnNamePipe,
     SeriesComponent,
     SeriesGeneratorComponent,
+    SeriesEditorComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

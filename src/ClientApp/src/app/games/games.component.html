@@ -29,8 +29,7 @@
         <td *ngIf="game.goals && game.goals.length> 0; else noGoals" [routerLink]="[game.id, 'goals']"
           style="text-align: center">
           <p class="mb-0" [class.complete]="goal.completed" *ngFor="let goal of game.goals">
-            {{goal.name}} -
-            {{goal.earned}}/{{goal.total}}</p>
+            {{goal.name}}{{goal.completed ? '' : ' - ' + goal.earned + '/' + goal.total}}</p>
         </td>
       </ng-template>
       <ng-template #noGoals>

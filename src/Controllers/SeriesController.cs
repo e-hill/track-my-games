@@ -1,5 +1,7 @@
 
 
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -40,5 +42,27 @@ namespace TrackMyGames.Controllers
             var createdSeries = await _seriesRepository.AddSeriesAsync(series);
             return CreatedAtAction(nameof(Get), new { id = createdSeries.Id }, createdSeries);
         }
+
+        // [HttpGet("{seriesId}/games")]
+        // public async Task<IActionResult> GetGames(int seriesId)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+
+        //     return Ok(games);
+        // }
+
+        // [HttpPost("{seriesId}/games")]
+        // public async Task<IActionResult> PostGames([FromBody] IEnumerable<CreateGameViewModel> gamesToAdd, int seriesId)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+
+        //     return CreatedAtAction(nameof(GetGames));
+        // }
     }
 }
