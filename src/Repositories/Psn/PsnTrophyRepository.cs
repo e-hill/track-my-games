@@ -37,6 +37,15 @@ namespace TrackMyGames.Repositories.Psn
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task LinkGroupAsync(int trophyId, int groupId)
+        {
+            var trophy = await _dbContext.PsnTrophies.SingleAsync(x => x.Id == trophyId);
+            trophy.Group = await _dbContext.PsnTrophyGroups.SingleAsync(x => x.Id == groupId);
+
+            _dbContext.PsnTrophies.Update(trophy);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<PsnTrophy> GetTrophyAsync(int psnId, int collectionId)
         {
             var trophy = await _dbContext.PsnTrophies.SingleOrDefaultAsync(x => x.PsnId == psnId && x.CollectionId == collectionId);

@@ -10,6 +10,8 @@ namespace TrackMyGames.Pipelines
 
         Task ProcessTrophyUpdate(GetTrophiesResponse.TrophiesResponse trophyResponse, string psnId, int collectionId);
 
-        Task ProcessTrophyGroupUpdate(GetTrophyGroupsResponse.TrophyGroupsDetails trophyGroupResponse, string psnId, int collectionId);
+        Task ProcessTrophyWithGroupUpdate(GetTrophiesResponse.TrophiesResponse trophyResponse, string psnId, int collectionId, int groupId);
+
+        Task<PsnTrophyGroup> ProcessTrophyGroupUpdate(GetTrophyGroupsResponse.TrophyGroupsDetails trophyGroupResponse, string psnId, int collectionId);
     }
 }

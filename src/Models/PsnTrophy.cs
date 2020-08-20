@@ -22,6 +22,8 @@ namespace TrackMyGames.Models
 
         public int PsnId { get; set; }
 
+        public int? GroupId { get; set; }
+
         public int? CollectionId { get; set; }
     }
 }

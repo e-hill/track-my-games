@@ -51,7 +51,27 @@ namespace TrackMyGames.Pipelines
             }
         }
 
-        public async Task ProcessTrophyGroupUpdate(GetTrophyGroupsResponse.TrophyGroupsDetails trophyGroupResponse, string psnId, int collectionId)
+        public async Task ProcessTrophyWithGroupUpdate(GetTrophiesResponse.TrophiesResponse trophyResponse, string psnId, int collectionId, int groupId)
+        {
+            var trophy = await EnsureTrophyExists(trophyResponse, collectionId);
+
+            if (trophy.CollectionId == null)
+            {
+                await _trophyRepository.LinkCollectionAsync(trophy.Id, collectionId);
+            }
+
+            if (trophy.GroupId == null)
+            {
+                await _trophyRepository.LinkGroupAsync(trophy.Id, groupId);
+            }
+
+            if (trophyResponse.FromUser != null)
+            {
+                await EnsurePsnUserProgressExists(trophyResponse.FromUser, trophy.Id);
+            }
+        }
+
+        public async Task<PsnTrophyGroup> ProcessTrophyGroupUpdate(GetTrophyGroupsResponse.TrophyGroupsDetails trophyGroupResponse, string psnId, int collectionId)
         {
             var trophyGroup = await EnsureTrophyGroupExists(trophyGroupResponse, collectionId);
 
@@ -59,6 +79,8 @@ namespace TrackMyGames.Pipelines
             {
                 await _trophyGroupRepository.LinkCollectionAsync(trophyGroup.Id, collectionId);
             }
+
+            return trophyGroup;
         }
 
         private async Task<PsnTrophyCollection> EnsureCollectionExists(GetTrophyTitlesResponse.TrophyTitlesDetails title)

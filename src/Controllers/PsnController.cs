@@ -67,7 +67,7 @@ namespace TrackMyGames.Controllers
 
                         var groupId = trophyGroupResponse.TrophyGroupId;
                         var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
-                        await pipeline.ProcessTrophyGroupUpdate(trophyGroupResponse, psnId, collection.Id);
+                        var group = await pipeline.ProcessTrophyGroupUpdate(trophyGroupResponse, psnId, collection.Id);
 
                         var trophyResponse = await _psnCommunityApiService.GetTrophiesByGroupAsync(psnId, groupId, accessToken);
 
@@ -81,7 +81,7 @@ namespace TrackMyGames.Controllers
                             using var scope = _scopeFactory.CreateScope();
 
                             var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
-                            await pipeline.ProcessTrophyUpdate(trophyResponse, psnId, collection.Id);
+                            await pipeline.ProcessTrophyWithGroupUpdate(trophyResponse, psnId, collection.Id, group.Id);
                         });
                     });
                 }
