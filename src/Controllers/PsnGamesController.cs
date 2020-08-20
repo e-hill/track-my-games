@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TrackMyGames.Repositories;
+using TrackMyGames.Repositories.Psn;
 
 namespace TrackMyGames.Controllers
 {

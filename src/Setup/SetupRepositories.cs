@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using TrackMyGames.Repositories;
+using TrackMyGames.Repositories.Psn;
 
 namespace TrackMyGames.Setup
 {
@@ -12,6 +13,7 @@ namespace TrackMyGames.Setup
             services.AddTransient<IPsnGamesRepository, PsnGamesRepository>();
             services.AddTransient<IPsnTrophyCollectionRepository, PsnTrophyCollectionRepository>();
             services.AddTransient<IPsnTrophyRepository, PsnTrophyRepository>();
+            services.AddTransient<IPsnTrophyGroupRepository, PsnTrophyGroupRepository>();
             services.AddTransient<IPsnUserProgressRepository, PsnUserProgressRepository>();
             services.AddTransient<ISeriesRepository, SeriesRepository>();
         }

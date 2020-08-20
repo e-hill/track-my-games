@@ -1,9 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace TrackMyGames.Entities
+namespace TrackMyGames.Models
 {
-    public class PsnTrophyGroupEntity : BaseEntity
+    public class PsnTrophyGroup
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public string Detail { get; set; }
@@ -15,8 +15,5 @@ namespace TrackMyGames.Entities
         public string PsnId { get; set; }
 
         public int? CollectionId { get; set; }
-
-        [ForeignKey("CollectionId")]
-        public virtual PsnTrophyCollectionEntity Collection { get; set; }
     }
 }

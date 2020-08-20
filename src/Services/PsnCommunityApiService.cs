@@ -41,5 +41,31 @@ namespace TrackMyGames.Services
 
             return await _psnCommunityApi.GetTrophies(authHeader, psnId, request);
         }
+
+        public async Task<GetTrophiesResponse> GetTrophiesByGroupAsync(string psnId, string groupId, string accessToken)
+        {
+            var request = new GetTrophiesRequest
+            {
+                Fields = "@default,trophyRare,trophyEarnedRate,trophySmallIconUrl",
+                VisibleType = 1
+            };
+
+            var authHeader = "Bearer " + accessToken;
+
+            return await _psnCommunityApi.GetTrophiesByGroup(authHeader, psnId, groupId, request);
+        }
+
+        public async Task<GetTrophyGroupsResponse> GetTrophyGroupsAsync(string psnId, string accessToken)
+        {
+            var request = new GetTrophyGroupsRequest
+            {
+                Fields = "@default,trophyGroupSmallIconUrl",
+                NpLanguage = "en"
+            };
+
+            var authHeader = "Bearer " + accessToken;
+
+            return await _psnCommunityApi.GetTrophyGroups(authHeader, psnId, request);
+        }
     }
 }

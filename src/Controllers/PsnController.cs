@@ -46,25 +46,62 @@ namespace TrackMyGames.Controllers
             Parallel.ForEach(trophyTitlesResponse.TrophyTitles, async (trophyTitle) =>
             {
                 using var scope = _scopeFactory.CreateScope();
-
                 var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
+
                 var collection = await pipeline.ProcessCollectionUpdate(trophyTitle);
 
                 var psnId = trophyTitle.NpCommunicationId;
-                var trophyResponse = await _psnCommunityApiService.GetTrophiesAsync(psnId, accessToken);
 
-                if (trophyResponse == null || trophyResponse.Trophies == null)
+                if (trophyTitle.HasTrophyGroups)
                 {
-                    _logger.LogError($"Failed to get trophies for {psnId} from psn community api endpoint.");
+                    var trophyGroupsResponse = await _psnCommunityApiService.GetTrophyGroupsAsync(psnId, accessToken);
+
+                    if (trophyGroupsResponse == null || trophyGroupsResponse.TrophyGroups == null)
+                    {
+                        _logger.LogError($"Failed to get trophy groups for {psnId} from psn community api endpoint.");
+                    }
+
+                    Parallel.ForEach(trophyGroupsResponse.TrophyGroups, async (trophyGroupResponse) =>
+                    {
+                        using var scope = _scopeFactory.CreateScope();
+
+                        var groupId = trophyGroupResponse.TrophyGroupId;
+                        var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
+                        await pipeline.ProcessTrophyGroupUpdate(trophyGroupResponse, psnId, collection.Id);
+
+                        var trophyResponse = await _psnCommunityApiService.GetTrophiesByGroupAsync(psnId, groupId, accessToken);
+
+                        if (trophyResponse == null || trophyResponse.Trophies == null)
+                        {
+                            _logger.LogError($"Failed to get trophies by group {groupId} for {psnId} from psn community api endpoint.");
+                        }
+
+                        Parallel.ForEach(trophyResponse.Trophies, async (trophyResponse) =>
+                        {
+                            using var scope = _scopeFactory.CreateScope();
+
+                            var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
+                            await pipeline.ProcessTrophyUpdate(trophyResponse, psnId, collection.Id);
+                        });
+                    });
                 }
-
-                Parallel.ForEach(trophyResponse.Trophies, async (trophyResponse) =>
+                else
                 {
-                    using var scope = _scopeFactory.CreateScope();
+                    var trophyResponse = await _psnCommunityApiService.GetTrophiesAsync(psnId, accessToken);
 
-                    var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
-                    await pipeline.ProcessTrophyUpdate(trophyResponse, psnId, collection.Id);
-                });
+                    if (trophyResponse == null || trophyResponse.Trophies == null)
+                    {
+                        _logger.LogError($"Failed to get trophies for {psnId} from psn community api endpoint.");
+                    }
+
+                    Parallel.ForEach(trophyResponse.Trophies, async (trophyResponse) =>
+                    {
+                        using var scope = _scopeFactory.CreateScope();
+
+                        var pipeline = scope.ServiceProvider.GetRequiredService<IPsnPipeline>();
+                        await pipeline.ProcessTrophyUpdate(trophyResponse, psnId, collection.Id);
+                    });
+                }
             });
 
             return NoContent();

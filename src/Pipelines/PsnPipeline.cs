@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackMyGames.Models;
 using TrackMyGames.Refit;
-using TrackMyGames.Repositories;
+using TrackMyGames.Repositories.Psn;
 
 namespace TrackMyGames.Pipelines
 {
@@ -12,11 +11,13 @@ namespace TrackMyGames.Pipelines
         private readonly IPsnGamesRepository _gamesRepository;
         private readonly IPsnTrophyCollectionRepository _collectionRepository;
         private readonly IPsnTrophyRepository _trophyRepository;
+        private readonly IPsnTrophyGroupRepository _trophyGroupRepository;
         private readonly IPsnUserProgressRepository _userProgressRepository;
 
-        public PsnPipeline(IPsnGamesRepository gamesRepository, IPsnTrophyCollectionRepository collectionRepository, IPsnTrophyRepository trophyRepository, IPsnUserProgressRepository userProgressRepository)
+        public PsnPipeline(IPsnGamesRepository gamesRepository, IPsnTrophyCollectionRepository collectionRepository, IPsnTrophyRepository trophyRepository, IPsnTrophyGroupRepository trophyGroupRepository, IPsnUserProgressRepository userProgressRepository)
         {
             _trophyRepository = trophyRepository;
+            _trophyGroupRepository = trophyGroupRepository;
             _gamesRepository = gamesRepository;
             _collectionRepository = collectionRepository;
             _userProgressRepository = userProgressRepository;
@@ -47,6 +48,16 @@ namespace TrackMyGames.Pipelines
             if (trophyResponse.FromUser != null)
             {
                 await EnsurePsnUserProgressExists(trophyResponse.FromUser, trophy.Id);
+            }
+        }
+
+        public async Task ProcessTrophyGroupUpdate(GetTrophyGroupsResponse.TrophyGroupsDetails trophyGroupResponse, string psnId, int collectionId)
+        {
+            var trophyGroup = await EnsureTrophyGroupExists(trophyGroupResponse, collectionId);
+
+            if (trophyGroup.CollectionId == null)
+            {
+                await _trophyGroupRepository.LinkCollectionAsync(trophyGroup.Id, collectionId);
             }
         }
 
@@ -121,6 +132,27 @@ namespace TrackMyGames.Pipelines
             return trophy;
         }
 
+        private async Task<PsnTrophyGroup> EnsureTrophyGroupExists(GetTrophyGroupsResponse.TrophyGroupsDetails trophyGroupResponse, int collectionId)
+        {
+            var trophyGroup = await _trophyGroupRepository.GetTrophyGroupAsync(trophyGroupResponse.TrophyGroupId, collectionId);
+
+            if (trophyGroup == null)
+            {
+                var newTrophyGroup = new PsnTrophyGroup
+                {
+                    Name = trophyGroupResponse.TrophyGroupName,
+                    Detail = trophyGroupResponse.TrophyGroupDetail,
+                    IconUrl = trophyGroupResponse.TrophyGroupIconUrl,
+                    SmallIconUrl = trophyGroupResponse.TrophyGroupSmallIconUrl,
+                    PsnId = trophyGroupResponse.TrophyGroupId,
+                };
+
+                trophyGroup = await _trophyGroupRepository.AddAsync(newTrophyGroup);
+            }
+
+            return trophyGroup;
+        }
+
         private async Task<PsnTrophyProgress> EnsurePsnUserProgressExists(GetTrophiesResponse.TrophiesResponse.FromUserDetails fromUser, int trophyId)
         {
             var userProgress = await _userProgressRepository.GetUserProgressAsync(trophyId, fromUser.OnlineId);
@@ -136,11 +168,10 @@ namespace TrackMyGames.Pipelines
 
                 userProgress = await _userProgressRepository.AddAsync(newUserProgress, trophyId);
             }
-            else
+            else if (fromUser.Earned != userProgress.Earned || fromUser.EarnedDate != userProgress.EarnedDate)
             {
                 userProgress.Earned = fromUser.Earned;
                 userProgress.EarnedDate = fromUser.EarnedDate;
-                userProgress.OnlineId = fromUser.OnlineId;
 
                 await _userProgressRepository.UpdateAsync(userProgress);
             }

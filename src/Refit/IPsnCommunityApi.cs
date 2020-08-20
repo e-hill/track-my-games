@@ -11,13 +11,13 @@ namespace TrackMyGames.Refit
         Task<GetTrophyTitlesResponse> GetTrophyTitles([Header("Authorization")] string accessToken, GetTrophyTitlesRequest request);
 
         [Get("/trophy/v1/trophyTitles/{psnId}/trophyGroups")]
-        Task<GetTrophyTitlesResponse> GetTrophyGroups([Header("Authorization")] string accessToken, string psnId, GetTrophyTitlesRequest request);
+        Task<GetTrophyGroupsResponse> GetTrophyGroups([Header("Authorization")] string accessToken, string psnId, GetTrophyGroupsRequest request);
 
         [Get("/trophy/v1/trophyTitles/{psnId}/trophyGroups/default/trophies")]
         Task<GetTrophiesResponse> GetTrophies([Header("Authorization")] string accessToken, string psnId, GetTrophiesRequest request);
 
         [Get("/trophy/v1/trophyTitles/{psnId}/trophyGroups/{groupId}/trophies")]
-        Task<GetTrophyTitlesResponse> GetTrophyTitlesByGroup([Header("Authorization")] string accessToken, string psnId, string groupId, GetTrophiesRequest request);
+        Task<GetTrophiesResponse> GetTrophiesByGroup([Header("Authorization")] string accessToken, string psnId, string groupId, GetTrophiesRequest request);
     }
 
     public class GetTrophyTitlesRequest
@@ -118,7 +118,7 @@ namespace TrackMyGames.Refit
             public int Platinum { get; set; }
         }
 
-        public TrophyGroupsDetails TrophyGroups { get; set; }
+        public IEnumerable<TrophyGroupsDetails> TrophyGroups { get; set; }
 
         public class TrophyGroupsDetails
         {

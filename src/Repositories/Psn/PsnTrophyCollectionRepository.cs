@@ -5,7 +5,7 @@ using TrackMyGames.DbContexts;
 using TrackMyGames.Entities;
 using TrackMyGames.Models;
 
-namespace TrackMyGames.Repositories
+namespace TrackMyGames.Repositories.Psn
 {
     public class PsnTrophyCollectionRepository : IPsnTrophyCollectionRepository
     {

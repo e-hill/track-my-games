@@ -8,5 +8,9 @@ namespace TrackMyGames.Services
         Task<GetTrophyTitlesResponse> GetTrophyTitlesAsync(string accessToken);
 
         Task<GetTrophiesResponse> GetTrophiesAsync(string psnId, string accessToken);
+
+        Task<GetTrophiesResponse> GetTrophiesByGroupAsync(string psnId, string groupId, string accessToken);
+
+        Task<GetTrophyGroupsResponse> GetTrophyGroupsAsync(string psnId, string accessToken);
     }
 }
