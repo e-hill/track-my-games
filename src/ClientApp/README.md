@@ -1,4 +1,4 @@
-# slimmest_build
+# track_my_games
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.1.
 

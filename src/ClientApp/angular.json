@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "slimmest_build": {
+    "track_my_games": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "slimmest_build:build"
+            "browserTarget": "track_my_games:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "slimmest_build:build:production"
+              "browserTarget": "track_my_games:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "slimmest_build:build"
+            "browserTarget": "track_my_games:build"
           }
         },
         "test": {
@@ -115,16 +115,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "slimmest_build:serve"
+            "devServerTarget": "track_my_games:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "slimmest_build:serve:production"
+              "devServerTarget": "track_my_games:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "slimmest_build"
+  "defaultProject": "track_my_games"
 }
