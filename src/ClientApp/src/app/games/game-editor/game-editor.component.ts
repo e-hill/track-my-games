@@ -27,7 +27,6 @@ export class GameEditorComponent implements OnInit {
     this.gameId = this.route.snapshot.paramMap.get('id');
 
     this.gamesService.getGame(this.gameId)
-      .pipe(take(1))
       .subscribe((game) => {
         this.gameForm.setValue({
           name: game.name,
@@ -48,25 +47,21 @@ export class GameEditorComponent implements OnInit {
 
   uncompleteGame() {
     this.gamesService.uncompleteGame(this.gameId)
-      .pipe(take(1))
       .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 
   completeGame() {
     this.gamesService.completeGame(this.gameId)
-      .pipe(take(1))
       .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 
   unarchiveGame() {
     this.gamesService.unarchiveGame(this.gameId)
-      .pipe(take(1))
       .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 
   archiveGame() {
     this.gamesService.archiveGame(this.gameId)
-      .pipe(take(1))
       .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 
@@ -87,7 +82,6 @@ export class GameEditorComponent implements OnInit {
     }
 
     this.gamesService.updateGame(game, this.gameId)
-      .pipe(take(1))
       .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 }

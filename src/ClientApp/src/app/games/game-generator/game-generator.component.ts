@@ -43,7 +43,6 @@ export class GameGeneratorComponent implements OnInit {
     }
 
     this.gamesService.addGame(game)
-      .pipe(take(1))
       .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 }

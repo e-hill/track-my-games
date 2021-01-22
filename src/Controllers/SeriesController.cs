@@ -15,11 +15,13 @@ namespace TrackMyGames.Controllers
     public class SeriesController : Controller
     {
         private readonly ISeriesRepository _seriesRepository;
+        private readonly IGamesRepository _gamesRepository;
         private readonly IMapper _mapper;
 
-        public SeriesController(ISeriesRepository seriesRepository, IMapper mapper)
+        public SeriesController(ISeriesRepository seriesRepository, IGamesRepository gamesRepository, IMapper mapper)
         {
             _seriesRepository = seriesRepository;
+            _gamesRepository = gamesRepository;
             _mapper = mapper;
         }
 
@@ -41,6 +43,20 @@ namespace TrackMyGames.Controllers
             var series = _mapper.Map<Series>(seriesToCreate);
             var createdSeries = await _seriesRepository.AddSeriesAsync(series);
             return CreatedAtAction(nameof(Get), new { id = createdSeries.Id }, createdSeries);
+        }
+
+        [HttpGet("{seriesId}")]
+        public async Task<IActionResult> Get(int seriesId)
+        {
+            var series = await _seriesRepository.GetSeriesByIdAsync(seriesId);
+            if(series == null)
+            {
+                return BadRequest();
+            }
+
+            // await _gamesRepository.
+
+            return Ok(series);
         }
 
         // [HttpGet("{seriesId}/games")]

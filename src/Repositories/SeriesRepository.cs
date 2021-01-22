@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,12 @@ namespace TrackMyGames.Repositories
         {
             var series = await _dbContext.Series.ToListAsync();
             return _mapper.Map<IEnumerable<Series>>(series);
+        }
+
+        public async Task<Series> GetSeriesByIdAsync(int seriesId)
+        {
+            var series = await _dbContext.Series.Where(x => x.Id == seriesId).FirstOrDefaultAsync();
+            return _mapper.Map<Series>(series);
         }
 
         public async Task<Series> AddSeriesAsync(Series series)

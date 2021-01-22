@@ -1,1 +1,16 @@
-<p>series-editor works!</p>
+<div class="d-flex align-items-end mb-3">
+  <h3 class="mb-0">{{seriesName}} Games</h3>
+</div>
+<table class="table table-hover table-sm">
+  <caption>{{seriesName}} Games</caption>
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let games of games$ | async">
+      <td><a [routerLink]="[series.id]">{{games.name}}</a></td>
+    </tr>
+  </tbody>
+</table>

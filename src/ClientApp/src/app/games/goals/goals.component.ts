@@ -26,7 +26,6 @@ export class GoalsComponent implements OnInit {
     this.gameId = this.route.snapshot.paramMap.get('id');
 
     this.goalsService.getGoals(this.gameId)
-      .pipe(take(1))
       .subscribe(goals => goals.map(goal => this.addGoal(goal)));
   }
 
@@ -48,7 +47,6 @@ export class GoalsComponent implements OnInit {
     const goals = this.goals.controls.map(ctrl => ctrl.value);
 
     this.goalsService.addGoals(goals, this.gameId)
-      .pipe(take(1))
       .subscribe(_ => { this.router.navigate(['../..'], { relativeTo: this.route }) });
   }
 }

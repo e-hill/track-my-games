@@ -25,7 +25,6 @@ export class SeriesGeneratorComponent implements OnInit {
     series.name = this.seriesForm.get('name').value;
 
     this.seriesService.addSeries(series)
-      .pipe(take(1))
       .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
   }
 }
