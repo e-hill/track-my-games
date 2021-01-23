@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GamesService, Game } from './games.service';
-import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { Game } from './games.service';
+import { select, Store } from '@ngrx/store';
+import { loadGames } from '../state/games.actions';
+import { selectGames } from '../state/games.selectors';
 
 @Component({
   selector: 'app-games',
@@ -9,24 +10,12 @@ import { tap, map } from 'rxjs/operators';
   styleUrls: ['./games.component.scss']
 })
 export class GamesComponent implements OnInit {
-  games$: Observable<Game[]>;
+  games$ = this.store.pipe(select(selectGames));
 
-  constructor(private gamesService: GamesService) { }
+  constructor(private store: Store) { }
 
-  ngOnInit(): void {
-    this.games$ = this.gamesService.getGames().pipe(
-      tap(games => {
-        games.sort((a, b) => {
-          if (a.name > b.name) return 1;
-          else if (a.name < b.name) return -1;
-          else {
-            if (a.releaseDate > b.releaseDate) return 1;
-            else if (a.releaseDate < b.releaseDate) return -1;
-            else return 0;
-          };
-        });
-      })
-    );
+  ngOnInit() {
+    this.store.dispatch(loadGames());
   }
 
   getNameClass(game: Game) {

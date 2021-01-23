@@ -17,6 +17,11 @@ import { FilterOnNamePipe } from './games/games.pipe';
 import { SeriesComponent } from './series/series.component';
 import { SeriesGeneratorComponent } from './series/series-generator/series-generator.component';
 import { SeriesEditorComponent } from './series/series-editor/series-editor.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './state/games.effects';
+import { gamesReducer } from './state/games.reducer';
 
 @NgModule({
   declarations: [
@@ -39,7 +44,10 @@ import { SeriesEditorComponent } from './series/series-editor/series-editor.comp
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot({ games: gamesReducer }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, }),
+    EffectsModule.forRoot([AppEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent]
