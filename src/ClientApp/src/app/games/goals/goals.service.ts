@@ -8,7 +8,7 @@ export class Goal {
   earned: number;
   total: number;
   completed: boolean;
-  gameId: string;
+  gameId: number;
 }
 
 export class NewGoal {

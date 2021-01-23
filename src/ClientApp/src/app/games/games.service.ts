@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Goal } from './goals/goals.service';
 
 export class Game {
-  id: string;
+  id: number;
   name: string;
   releaseDate: string;
   system: string;

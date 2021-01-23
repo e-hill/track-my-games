@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { GamesService, Game } from '../games.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { selectGame } from 'src/app/state/games.selectors';
 
 @Component({
   selector: 'app-game-editor',
@@ -21,12 +23,12 @@ export class GameEditorComponent implements OnInit {
     publisher: this.fb.control('')
   });
 
-  constructor(private gamesService: GamesService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) { }
+  constructor(private gamesService: GamesService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private store: Store) { }
 
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id');
 
-    this.gamesService.getGame(this.gameId)
+    this.store.pipe(select(selectGame, { id: this.gameId }), filter(x => !!x))
       .subscribe((game) => {
         this.gameForm.setValue({
           name: game.name,

@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Game } from './games.service';
 import { select, Store } from '@ngrx/store';
-import { loadGames } from '../state/games.actions';
 import { selectGames } from '../state/games.selectors';
 
 @Component({
@@ -9,14 +8,10 @@ import { selectGames } from '../state/games.selectors';
   templateUrl: './games.component.html',
   styleUrls: ['./games.component.scss']
 })
-export class GamesComponent implements OnInit {
+export class GamesComponent {
   games$ = this.store.pipe(select(selectGames));
 
   constructor(private store: Store) { }
-
-  ngOnInit() {
-    this.store.dispatch(loadGames());
-  }
 
   getNameClass(game: Game) {
     if (game.archived) {
