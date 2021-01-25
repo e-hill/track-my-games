@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
 import { map, mergeMap, catchError, tap } from 'rxjs/operators';
-import { GamesService } from '../games/games.service';
-import { loadGames, loadGamesSuccess } from './games.actions';
+import { Game, GamesService } from '../games/games.service';
+import { loadGames, gamesLoadedSuccess, updateGame, gameUpdatedSuccess } from './games.actions';
 
 @Injectable()
 export class AppEffects {
@@ -23,9 +23,18 @@ export class AppEffects {
             };
           });
         }),
-        map(games => (loadGamesSuccess({ games }))),
+        map(games => (gamesLoadedSuccess({ games }))),
         catchError(() => EMPTY)
       ))
+  ));
+
+  updateGame$ = createEffect(() => this.actions$.pipe(
+    ofType(updateGame),
+    mergeMap(x => this.gamesService.updateGame(x.update)
+      .pipe(
+        map(() => (gameUpdatedSuccess()))
+      )
+    )
   ));
 
   constructor(

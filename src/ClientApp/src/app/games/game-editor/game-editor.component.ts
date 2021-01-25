@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { GamesService, Game } from '../games.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { selectGame } from 'src/app/state/games.selectors';
+import { updateGame } from 'src/app/state/games.actions';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-game-editor',
@@ -68,22 +70,26 @@ export class GameEditorComponent implements OnInit {
   }
 
   onSubmit() {
-    var game = new Game();
-    game.name = this.gameForm.get('name').value;
-    game.releaseDate = this.gameForm.get('releaseDate').value;
-    game.system = this.gameForm.get('system').value;
+    var update: Update<Game> = {
+      id: this.gameId,
+      changes: {
+        name: this.gameForm.get('name').value,
+        releaseDate: this.gameForm.get('releaseDate').value,
+        system: this.gameForm.get('system').value,
+      }
+    };
 
     const developer = this.gameForm.get('developer').value;
     if (developer !== '') {
-      game.developers = [developer];
+      update.changes.developers = [developer];
     }
 
     const publisher = this.gameForm.get('publisher').value;
     if (publisher !== '') {
-      game.publishers = [publisher];
+      update.changes.publishers = [publisher];
     }
 
-    this.gamesService.updateGame(game, this.gameId)
-      .subscribe(_ => { this.router.navigate(['..'], { relativeTo: this.route }) });
+    this.store.dispatch(updateGame({ update }));
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 }

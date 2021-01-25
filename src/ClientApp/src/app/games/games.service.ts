@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Goal } from './goals/goals.service';
+import { Update } from '@ngrx/entity';
 
 export class Game {
   id: number;
@@ -82,31 +83,31 @@ export class GamesService {
     return this.http.patch(this.baseUrl + `api/games/${gameId}`, body);
   }
 
-  updateGame(game: Game, gameId: string) {
+  updateGame(update: Update<Game>) {
     var body = [
       {
         op: 'add',
         path: '/name',
-        value: game.name
+        value: update.changes.name
       }, {
         op: 'add',
         path: '/releaseDate',
-        value: game.releaseDate
+        value: update.changes.releaseDate
       }, {
         op: 'add',
         path: '/system',
-        value: game.system
+        value: update.changes.system
       }, {
         op: 'add',
         path: '/developers',
-        value: game.developers
+        value: update.changes.developers
       }, {
         op: 'add',
         path: '/publishers',
-        value: game.publishers
+        value: update.changes.publishers
       }
     ];
 
-    return this.http.patch(this.baseUrl + `api/games/${gameId}`, body);
+    return this.http.patch(this.baseUrl + `api/games/${update.id}`, body);
   }
 }
